@@ -49,6 +49,7 @@ public:
     void addACtiveField(Field* f);
     void removeActiveField(Field* f);
     void addActiveField(Field* f);
+    QVector<Field*>* getActiveFields();
     void setLocked(bool val);
 
     void setState(int state);

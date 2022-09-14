@@ -59,7 +59,7 @@ QVector<Field*>* Field::getAdjacentFields(){
     return res;
 }
 
-QVector<Field*>* Field::getFields(Pattern* pattern){
+QVector<Field*>* Field::getFields(Pattern* pattern, bool includeAll){
     if(this->board == nullptr){return nullptr;}
 
     QVector<Field*>* res = new QVector<Field*>;
@@ -67,7 +67,7 @@ QVector<Field*>* Field::getFields(Pattern* pattern){
     QVector<Coords> transformed = pattern->transform(this->xPos, this->yPos);
     foreach (Coords i, transformed) {
         Field* temp = board->getField(i.x, i.y);
-        if(temp != nullptr){
+        if(temp != nullptr || includeAll){
             res->append(temp);
         }
     }

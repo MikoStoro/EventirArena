@@ -27,14 +27,16 @@ enum highlights{
 
 enum messageIDs{
     MOVED,
-    HIT
+    TURN_ENDED,
+    RESET_STATE,
+    DEFEND,
+    NO_FIELDS
 };
 
 enum messageResponses{
     PASS,
     TRUE,
     FALSE,
-    DEFEND
 };
 
 

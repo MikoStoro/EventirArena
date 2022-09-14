@@ -26,11 +26,11 @@ void Sword::switchMode(){
     }
 }
 
-void Sword::action(){
+void Sword::action(bool locked){
     if(this->movePattern == nullptr){return;}
     QVector<Field*>* adj = this->currentField->getFields(this->movePattern);
     adj->append(this->currentField);
-    this->currentField->getBoard()->setWaitingItem(this, adj);
+    this->currentField->getBoard()->setWaitingItem(this, adj, locked);
     this->markInteractions(adj);
 }
 
@@ -86,7 +86,7 @@ void Sword::markInteractions(QVector<Field*>* targets){
         }
 }
 
-void Sword::resolveAttack(Field* f){
+void Sword::resolveMove(Field* f){
     if(!this->hitMode && f->getItem() == nullptr){
         this->move(f);
     }

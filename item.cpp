@@ -53,8 +53,9 @@ void Item::setField(Field* curr){
     }
     if(this->movePattern == nullptr){
         delete this->movePattern;
-        this->movePattern = new Pattern(curr->getBoard()->size());
-        this->movePattern->makeAdjacent();
+        this->createMovePattern(this->currentField->getBoard()->size());
+//        this->movePattern = new Pattern(curr->getBoard()->size());
+//        this->movePattern->makeAdjacent();
     }
 }
 
@@ -65,16 +66,19 @@ Field* Item::getField(){
 
 void Item::updateAdjacentFields(){
     if(this->currentField != nullptr){
-        if(this->adjacentFields != nullptr){delete this->adjacentFields;}
+        if(this->adjacentFields != nullptr){
+            this->adjacentFields->clear();
+            delete this->adjacentFields;
+        }
         this->adjacentFields = this->currentField->getAdjacentFields();
     }
 }
 
-void Item::action(){
+void Item::action(bool locked){
     if(this->movePattern == nullptr){return;}
 
     QVector<Field*>* adj = this->currentField->getFields(this->movePattern);
-    currentField->getBoard()->setWaitingItem(this, adj);
+    currentField->getBoard()->setWaitingItem(this, adj, locked);
     this->markInteractions(adj);
 }
 
@@ -110,7 +114,7 @@ void Item::defend(){
         Item* a = this->attackingItem;
         Field* curr = this->currentField;
         this->destroy();
-        a->resolveAttack(curr);
+        a->resolveMove(curr);
     }
 }
 
@@ -149,7 +153,7 @@ void Item::processDefenseInput(Field* f){
     this->defending = false;
     this->attackingItem = nullptr;
     f->getItem()->destroy();
-    attacking->resolveAttack(f);
+    attacking->resolveMove(f);
 }
 
 void Item::move(Field* f){
@@ -193,7 +197,7 @@ void Item::endTurn(){
     b->changeActivePlayer();
 }
 
-void Item::resolveAttack(Field* f){
+void Item::resolveMove(Field* f){
     if(f->getItem() == nullptr){
         this->move(f);
     }
@@ -247,6 +251,9 @@ void Item::sendMessageToFields(int messageId, Pattern* pattern){
 }
 
 int Item::receiveMessage(int messageId, Item* sender){
+    if(messageId == RESET_STATE){
+        this->resetState();
+    }
     return PASS;
 }
 
@@ -284,6 +291,11 @@ void Item::setName(QString newName){
 
 QColor Item::getColor(){
     return *this->player->getColor();
+}
+
+QVector<Field*>* Item::getAdjacenFields(){
+    QVector<Field*>* temp = this->currentField->getAdjacentFields();
+    return temp;
 }
 
 

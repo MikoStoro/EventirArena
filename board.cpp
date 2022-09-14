@@ -111,6 +111,7 @@ Board::Board(int boardSize, QGraphicsScene* scene){
             this->setActiveFields(active);
             this->locked = locked;
         }
+
     }
 
     void Board::removeWaitingItem(bool keepState){
@@ -156,6 +157,7 @@ Board::Board(int boardSize, QGraphicsScene* scene){
             this->activeFields->removeOne(f);
             f->highlight(NONE);
             if(this->activeFields->empty()){
+                this->waitingItem->receiveMessage(NO_FIELDS, nullptr);
                 qDebug("No suitable fields");
                 this->removeWaitingItem();
             }
@@ -263,5 +265,9 @@ Board::Board(int boardSize, QGraphicsScene* scene){
 
     QColor* Board::getHoverBorderColor(){
         return this->hoverBorderColor;
+    }
+
+    QVector<Field*>* Board::getActiveFields(){
+        return this->activeFields;
     }
 

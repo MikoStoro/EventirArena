@@ -4,6 +4,8 @@
 #include "item.h"
 #include "sword.h"
 #include "shield.h"
+#include "banner.h"
+#include "spear.h"
 
 #include <QApplication>
 #include <QGraphicsScene>
@@ -38,13 +40,13 @@ int main(int argc, char *argv[])
     Item* test = new Sword(p1);
     board.setItem(1,1,test);
     p1->activateItem(test);
-    Item* test2 = new Shield(p2);
+    Item* test2 = new Banner(p2);
     board.setItem(5,5, test2);
     p2->activateItem(test2);
     Item* test5 = new Shield(p2);
     board.setItem(4,4, test5);
     p2->activateItem(test5);
-    Item* test3 = new Sword(p1);
+    Item* test3 = new Spear(p1);
     board.setItem(1,2,test3);
     p1->activateItem(test3);
     Item* test4 = new Shield(p2);

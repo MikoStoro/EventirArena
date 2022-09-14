@@ -13,7 +13,7 @@ public:
     Shield(Field* curr);
     Shield();
 
-    void action() override;
+    void action(bool locked = false) override;
     void processInput(Field* f) override;
     void markInteractions(QVector<Field*>* targets) override;
     void resetState() override;

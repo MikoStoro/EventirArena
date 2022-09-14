@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     Hexmath.cpp \
+    banner.cpp \
     board.cpp \
     coords.cpp \
     field.cpp \
@@ -20,9 +21,11 @@ SOURCES += \
     pattern.cpp \
     player.cpp \
     shield.cpp \
+    spear.cpp \
     sword.cpp
 
 HEADERS += \
+    banner.h \
     board.h \
     coords.h \
     directions.h \
@@ -34,6 +37,7 @@ HEADERS += \
     pattern.h \
     player.h \
     shield.h \
+    spear.h \
     sword.h
 
 FORMS +=

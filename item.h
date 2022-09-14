@@ -36,7 +36,7 @@ public:
     void setPlayer(Player* player, bool active = false);
     Player* getPlayer();
 
-    virtual void action();
+    virtual void action(bool locked = false);
     virtual void markInteractions(QVector<Field*>* targets);
     //virtual void markDefense();
     virtual void processInput(Field* f);
@@ -46,7 +46,7 @@ public:
     virtual void swap(Field* f);
     virtual void damage(Field* f);
     virtual void destroy();
-    virtual void resolveAttack(Field* f);
+    virtual void resolveMove(Field* f);
     virtual void endTurn();
     virtual void defend();
     virtual void receiveHit(Item* source);
@@ -56,11 +56,12 @@ public:
     virtual void sendMessage(int messageId);
     virtual void sendMessageAround(int messageId);
     virtual void sendMessageToFields(int messageId, Pattern* pattern);
-    virtual int receiveMessage(int messageId, Item* sender);
+    virtual int receiveMessage(int messageId, Item* sender = nullptr);
     void addLinkedField(Field* f);
     void removeLinkedField(Field* f);
     void clearLinkedFields();
     QVector<Field*>* getLinkedFields();
+    QVector<Field*>* getAdjacenFields();
 
     QString getName();
     void setName(QString name);

@@ -24,7 +24,7 @@ public:
     Field(int x, int y, Board* b = nullptr, Item* i = nullptr);
     void setPos(int x, int y);
     QVector<Field*>* getAdjacentFields();
-    QVector<Field*>* getFields(Pattern* pattern);
+    QVector<Field*>* getFields(Pattern* pattern, bool includeAll = false);
     void setItem(Item* item);
     void setText(QString str);
     void clicked();

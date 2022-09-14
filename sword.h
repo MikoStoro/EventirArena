@@ -16,10 +16,10 @@ public:
 
     void switchMode();
 
-    void action() override;
+    void action(bool locked = false) override;
     void processInput(Field* f) override;
     void markInteractions(QVector<Field*>* targets) override;
-    void resolveAttack(Field* f) override;
+    void resolveMove(Field* f) override;
     void resetState() override;
 };
 

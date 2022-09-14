@@ -15,9 +15,9 @@ Shield::Shield() : Item(){
     this->setName("Shield");
 }
 
-void Shield::action(){
+void Shield::action(bool locked){
     QVector<Field*>* adj = this->currentField->getFields(this->movePattern);
-    this->currentField->getBoard()->setWaitingItem(this, adj);
+    this->currentField->getBoard()->setWaitingItem(this, adj, locked);
     this->markInteractions(this->adjacentFields);
 }
 
@@ -51,6 +51,8 @@ void Shield::markInteractions(QVector<Field*>* targets){
 }
 
 void Shield::resetState(){
+    this->defending = false;
+    this->attackingItem = nullptr;
     return;
 }
 
@@ -73,5 +75,7 @@ int Shield::receiveMessage(int messageId, Item* sender) {
                 sender->addLinkedField(this->currentField);
             }
         }
+        return PASS;
     }
+    Item::receiveMessage(messageId, sender);
 }
