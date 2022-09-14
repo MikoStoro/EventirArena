@@ -174,9 +174,14 @@ void Item::swap(Field* f){
             return;
         }
         this->currentField->setItem(target);
-        f->setItem(this);
         target->setField(this->currentField);
+        f->setItem(this);
         this->setField(f);
+
+        this->clearLinkedFields();
+        this->sendMessageAround(MOVED);
+        target->clearLinkedFields();
+        target->sendMessageAround(MOVED);
     }
 }
 

@@ -16,7 +16,6 @@ struct fieldPair{
 class Spear : public Item{
 private:
     Pattern* collisionPattern = nullptr;
-    //first for collision field, second for move field
     QVector<fieldPair>* fieldBuffer = new QVector<fieldPair>;
     void createMovePattern(int boardSize) override;
     QVector<Field*>* processCollisions();

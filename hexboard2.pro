@@ -13,6 +13,7 @@ SOURCES += \
     banner.cpp \
     board.cpp \
     coords.cpp \
+    eye.cpp \
     field.cpp \
     fieldcontainer.cpp \
     graphichexagon.cpp \
@@ -30,6 +31,7 @@ HEADERS += \
     coords.h \
     directions.h \
     enums.h \
+    eye.h \
     field.h \
     fieldcontainer.h \
     graphichexagon.h \
