@@ -47,8 +47,10 @@ int main(int argc, char *argv[])
     board.setItem(4,4, test5);
     p2->activateItem(test5);
     Item* test3 = new Spear(p1);
-    board.setItem(1,2,test3);
-    p1->activateItem(test3);
+    board.setItem(0,2,test3);
+    Item* test6 = new Spear(p1);
+    board.setItem(1,2,test6);
+    p1->activateItem(test6);
     Item* test4 = new Shield(p2);
     board.setItem(5,6,test4);
     p2->activateItem(test4);

@@ -1,6 +1,8 @@
 #include "pattern.h"
 #include "enums.h"
 
+#include <QDebug>
+
 Pattern::Pattern(int boardSize)
 {
     this->boardCenter = boardSize-1;
@@ -27,6 +29,18 @@ int Pattern::getBoardPart(Coords origin){
     return getBoardPart(origin.x);
 }
 
+
+int Pattern::distanceFromCenter(int x){
+    int res = qAbs(x - this->boardCenter);
+    return res;
+
+}
+
+int Pattern::pickSmaller(int a, int b){
+    if(a < b){return a;}
+    return b;
+}
+
 int Pattern::getBoardPart(int x){
     if(x == boardCenter){ return CENTER;}
     else if (x < boardCenter){return LOWER;}
@@ -43,8 +57,10 @@ bool Pattern::isDownward(Coords c){
     return false;
 }
 
-Coords Pattern::fix(Coords c){
-    return(Coords(c.x, c.y+1));
+Coords Pattern::fix(Coords c, int initX, Coords o){
+    int offset = pickSmaller(distanceFromCenter(initX),qAbs(o.x));
+    qDebug() << distanceFromCenter(initX) << o.x << offset;
+    return(Coords(c.x, c.y+offset));
 }
 
 QVector<Coords> Pattern::transform(int initX, int initY){
@@ -57,9 +73,8 @@ QVector<Coords> Pattern::transform(int initX, int initY){
         res.x += offset.x;
         res.y += offset.y;
         int boardPart = getBoardPart(initX);
-
         if((isUpward(offset) && boardPart == LOWER) || (isDownward(offset) && boardPart == UPPER)){
-                res = fix(res);
+                res = fix(res, initX, offset);
         }
 
         result.append(res);

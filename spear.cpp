@@ -109,6 +109,8 @@ void Spear::markSpearInteractions() {
             moveField->highlight(SPECIAL);
         }
 
+        //p.collision->highlight(SPECIAL);
+
     }
 
 }

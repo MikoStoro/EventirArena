@@ -20,9 +20,15 @@ public:
     QVector<Coords> transform(Coords origin);
     int getBoardPart(Coords origin);
     int getBoardPart(int x);
+
+
+    int distanceFromCenter(int x);
+    int pickSmaller(int a, int b);
+
     bool isUpward(Coords c);
     bool isDownward(Coords c);
-    Coords fix(Coords c);
+    Coords fix(Coords c, int initX, Coords o);
+
 
     void makeAdjacent();
 
