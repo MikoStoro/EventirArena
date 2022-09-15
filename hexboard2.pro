@@ -16,6 +16,7 @@ SOURCES += \
     eye.cpp \
     field.cpp \
     fieldcontainer.cpp \
+    gamescreenui.cpp \
     graphichexagon.cpp \
     item.cpp \
     main.cpp \
@@ -23,7 +24,8 @@ SOURCES += \
     player.cpp \
     shield.cpp \
     spear.cpp \
-    sword.cpp
+    sword.cpp \
+    window.cpp
 
 HEADERS += \
     banner.h \
@@ -34,13 +36,15 @@ HEADERS += \
     eye.h \
     field.h \
     fieldcontainer.h \
+    gamescreenui.h \
     graphichexagon.h \
     item.h \
     pattern.h \
     player.h \
     shield.h \
     spear.h \
-    sword.h
+    sword.h \
+    window.h
 
 FORMS +=
 

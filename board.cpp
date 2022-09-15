@@ -2,6 +2,7 @@
 #include "graphichexagon.h"
 #include "field.h"
 #include "item.h"
+#include "window.h"
 
 #include <QDebug>
 
@@ -235,6 +236,7 @@ Board::Board(int boardSize, QGraphicsScene* scene){
         if(this->players.contains(player)){
             this->activePlayer = player;
             activePlayerIndex = players.lastIndexOf(player);
+            window->displayPlayer(this->activePlayer->getName(), this->activePlayer->getColor());
         }else{
             qDebug("Invalid Player");
         }
@@ -244,6 +246,16 @@ Board::Board(int boardSize, QGraphicsScene* scene){
         if(this->activePlayerIndex < players.size()-1){activePlayerIndex += 1;}
         else{this->activePlayerIndex = 0;}
         activePlayer = players[activePlayerIndex];
+
+        window->displayPlayer(this->activePlayer->getName(), this->activePlayer->getColor());
+    }
+
+    void Board::setWindow(Window *win){
+        this->window = win;
+    }
+
+    void Board::log(QString &entry){
+        if(window != nullptr){this->window->log(entry);}
     }
 
 

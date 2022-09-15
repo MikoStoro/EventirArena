@@ -6,6 +6,7 @@
 #include "player.h"
 class Field;
 class Item;
+class Window;
 
 class Board
 {
@@ -24,6 +25,8 @@ private:
     Item* waitingItem = nullptr;
     QVector<Field*>* activeFields = nullptr;
     bool locked = false;
+
+    Window* window = nullptr;
 
     QColor* baseFieldColor = new QColor(110,110,110, 200);
     QColor* baseBorderColor = new QColor(0,0,0,255);
@@ -64,6 +67,9 @@ public:
     void addPlayer(int id);
     void setActivePlayer(Player* player);
     void changeActivePlayer();
+
+    void setWindow(Window* win);
+    void log(QString& entry);
 
     QColor* getBaseFieldColor();
     QColor* getBaseBorderColor();

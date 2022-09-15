@@ -20,21 +20,31 @@
 #include <math.h>
 #include <string>
 #include <QDebug>
+#include <window.h>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+
     QGraphicsScene* scene = new QGraphicsScene();
     QGraphicsView* view = new QGraphicsView(scene);
+    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
+    Window win;
+    win.setView(view);
     Board board(5,scene);
+    win.setBoard(&board);
+    win.initGameScreen();
 
     Player* p1 = new Player(A);
     p1->setColor(255,0,0,128);
+    p1->setName(QString("Red"));
     board.addPlayer(p1);
     Player* p2 = new Player(B);
     p2->setColor(0,0,255,128);
+    p2->setName(QString("Blue"));
     board.setActivePlayer(p1);
     board.addPlayer(p2);
 
@@ -56,8 +66,8 @@ int main(int argc, char *argv[])
     board.setItem(5,6,test4);
     p2->activateItem(test4);
 
-
-    view->show();
+    win.show();
+    //view->show();
 
     return a.exec();
 }

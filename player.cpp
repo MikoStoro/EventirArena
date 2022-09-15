@@ -21,6 +21,15 @@ int Player::getId(){
     return this->id;
 }
 
+void Player::setName(QString name){
+    this->name = name;
+}
+
+QString *Player::getName()
+{
+    return &this->name;
+}
+
 QColor* Player::getColor(){
     return this->playerColor;
 }

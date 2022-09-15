@@ -8,6 +8,7 @@
 class Pattern;
 class Field;
 class Player;
+class Board;
 
 class Item {
 protected:
@@ -16,6 +17,7 @@ protected:
     Pattern* movePattern = nullptr;
     Pattern* adjacentPattern = nullptr;
     Field* currentField = nullptr;
+
     QVector<Field*> linkedFields;
     bool defending = false;
     Item* attackingItem = nullptr;
@@ -28,6 +30,8 @@ public:
     Item(Player* player);
     Item(Field* curr);
     Item();
+
+    Board* board = nullptr;
 
     virtual void setField(Field* curr);
     Field* getField();

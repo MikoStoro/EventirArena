@@ -48,12 +48,13 @@ Player* Item::getPlayer(){
 
 void Item::setField(Field* curr){
     this->currentField = curr;
+    this->board = curr->getBoard();
     if(this->currentField != nullptr){
         this->updateAdjacentFields();
     }
     if(this->movePattern == nullptr){
         delete this->movePattern;
-        this->createMovePattern(this->currentField->getBoard()->size());
+        this->createMovePattern(board->size());
 //        this->movePattern = new Pattern(curr->getBoard()->size());
 //        this->movePattern->makeAdjacent();
     }
@@ -78,7 +79,7 @@ void Item::action(bool locked){
     if(this->movePattern == nullptr){return;}
 
     QVector<Field*>* adj = this->currentField->getFields(this->movePattern);
-    currentField->getBoard()->setWaitingItem(this, adj, locked);
+    board->setWaitingItem(this, adj, locked);
     this->markInteractions(adj);
 }
 
@@ -86,7 +87,7 @@ void Item::markInteractions(QVector<Field*>* targets){
     foreach(Field* f, *targets){
         if(f->getItem() != nullptr){
             if(f->getItem()->getPlayer() == this->getPlayer()){
-                currentField->getBoard()->removeActiveField(f);
+                board->removeActiveField(f);
             }else{
                 f->highlight(SPECIAL);
             }
@@ -108,7 +109,7 @@ void Item::defend(){
     if(!defenders->empty()){
         defenders->append(this->currentField);
         this->defending = true;
-        this->currentField->getBoard()->setWaitingItem(this, defenders, true);
+        this->board->setWaitingItem(this, defenders, true);
     }else{
         delete defenders;
         Item* a = this->attackingItem;
@@ -131,11 +132,10 @@ bool Item::isDefended(){
 
 void Item::processInput(Field* f){
     Item* targetItem = f->getItem();
-    Board* b = currentField->getBoard();
 
     if(this->defending){
         this->processDefenseInput(f);
-        b->removeWaitingItem();
+        board->removeWaitingItem();
         return;
     }
 
@@ -143,7 +143,7 @@ void Item::processInput(Field* f){
         this->move(f);
         this->endTurn();
     }else if(targetItem->getPlayer() != this->getPlayer()){
-        b->removeWaitingItem();
+        board->removeWaitingItem();
         this->damage(f);
     }
 }
@@ -196,10 +196,9 @@ void Item::damage(Field* f){
 }
 
 void Item::endTurn(){
-    Board* b = this->currentField->getBoard();
     this->resetState();
-    b->removeWaitingItem();
-    b->changeActivePlayer();
+    board->removeWaitingItem();
+    board->changeActivePlayer();
 }
 
 void Item::resolveMove(Field* f){

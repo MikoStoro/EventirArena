@@ -21,8 +21,8 @@ public:
     void setId(int id);
     int getId();
 
-    void setName(QString& name);
-    QString getName();
+    void setName(QString name);
+    QString* getName();
 
     QColor* getColor();
     void setColor(int r, int g, int b, int a = 255);
