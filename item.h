@@ -52,10 +52,12 @@ public:
     virtual void destroy();
     virtual void resolveMove(Field* f);
     virtual void endTurn();
+    virtual void pass();
     virtual void defend();
     virtual void receiveHit(Item* source);
     virtual void resetState();
     virtual bool isDefended();
+    virtual bool isDefending();
 
     virtual void sendMessage(int messageId);
     virtual void sendMessageAround(int messageId);
@@ -68,6 +70,7 @@ public:
     QVector<Field*>* getAdjacenFields();
 
     QString getName();
+    QString fullName();
     void setName(QString name);
     QColor getColor();
 };

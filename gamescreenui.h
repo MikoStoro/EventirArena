@@ -1,27 +1,33 @@
 #ifndef GAMESCREENUI_H
 #define GAMESCREENUI_H
 
-
 #include <QPushButton>
 #include <QTextEdit>
 #include <QLabel>
 
 #include <QString>
 
+class Window;
+
 class GameScreenUI{
 private:
 public:
-    GameScreenUI();
+    GameScreenUI(Window* win);
+
+    Window* window = nullptr;
 
     QPushButton* passBtn = new QPushButton("Pass");
     QTextEdit* gameLog = new QTextEdit("");
     QLabel* playerLabel = new QLabel("Player: \n -");
-    QLabel* selectedPiece = new QLabel("Piece: -");
+    QLabel* turnLabel = new QLabel("Turn -");
+    QLabel* goldLabel = new QLabel("Gold \n -");
+
 
 
     void addToLog(QString& entry);
     void displayPlayer(QString* player = nullptr, QColor* col = nullptr);
-    void displayPiece(QString* pieceName = nullptr);
+    void displayTurn(int turnNo = 1);
+    void displayGold(int gold = 0);
 };
 
 

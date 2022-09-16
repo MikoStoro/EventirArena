@@ -115,7 +115,8 @@ Board::Board(int boardSize, QGraphicsScene* scene){
 
     }
 
-    void Board::removeWaitingItem(bool keepState){
+    void Board::removeWaitingItem(bool respectLock){
+        if(locked && respectLock){return;}
         if(this->state == WAITING){
             this->state = READY;
             //if(!keepState){this->waitingItem->resetState();}
@@ -248,6 +249,27 @@ Board::Board(int boardSize, QGraphicsScene* scene){
         activePlayer = players[activePlayerIndex];
 
         window->displayPlayer(this->activePlayer->getName(), this->activePlayer->getColor());
+        window->displayGold(activePlayer->getResources());
+    }
+
+
+    int Board::getTurnNo(){
+        return turnNo;
+    }
+
+    void Board::nextTurn(){
+        changeActivePlayer();
+        turnNo++;
+        window->displayTurn(turnNo);
+    }
+
+    void Board::pass(){
+        if(waitingItem!=nullptr && waitingItem->isDefending()){
+            qDebug() << "Can't pass until board is unlocked";
+            return;
+        }
+        if(waitingItem == nullptr){changeActivePlayer(); return;}
+        waitingItem->pass();
     }
 
     void Board::setWindow(Window *win){

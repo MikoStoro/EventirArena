@@ -6,6 +6,9 @@
 #include "item.h"
 #include "enums.h"
 
+#include <QGraphicsSceneMouseEvent>
+#include <QMouseEvent>
+
 GraphicHexagon::GraphicHexagon()
 {
 
@@ -14,11 +17,16 @@ GraphicHexagon::GraphicHexagon()
 void GraphicHexagon::mousePressEvent(QGraphicsSceneMouseEvent* event){
     if(hover){
         this->pressed = true;
+        this->lastPressed = event->buttons();
     }
 }
 
 void GraphicHexagon::mouseReleaseEvent(QGraphicsSceneMouseEvent* event){
-    if(hover && pressed){
+    if(lastPressed & Qt::RightButton){
+        gHex->getBoard()->removeWaitingItem(true);
+        return;
+    }
+    if(lastPressed & Qt::LeftButton && hover && pressed){
         if(this->gHex != nullptr){qDebug() << "Clicked " << gHex->getX() << gHex->getY() << '\n';}
         this->gHex->clicked();
         this->pressed = false;

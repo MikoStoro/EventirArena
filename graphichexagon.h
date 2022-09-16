@@ -20,6 +20,7 @@ private:
 
     bool hover = false;
     bool pressed = false;
+    Qt::MouseButtons lastPressed = Qt::NoButton;
 
     QGraphicsSimpleTextItem* textField = nullptr;
     Field* gHex = nullptr;

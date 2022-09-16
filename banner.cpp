@@ -96,6 +96,7 @@ void Banner::moveTarget(Item* target){
     this->markInteractions(adj);
 }
 
+
 //void Banner::markSpecialInteractions(QVector<Field*>* targets){
 
 //}

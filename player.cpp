@@ -30,6 +30,10 @@ QString *Player::getName()
     return &this->name;
 }
 
+int Player::getResources(){
+    return resources;
+}
+
 QColor* Player::getColor(){
     return this->playerColor;
 }

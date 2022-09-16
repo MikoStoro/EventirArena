@@ -130,6 +130,10 @@ bool Item::isDefended(){
     return false;
 }
 
+bool Item::isDefending(){
+    return defending;
+}
+
 void Item::processInput(Field* f){
     Item* targetItem = f->getItem();
 
@@ -152,12 +156,33 @@ void Item::processDefenseInput(Field* f){
     Item* attacking = this->attackingItem;
     this->defending = false;
     this->attackingItem = nullptr;
+
+    if(f->getItem() != this){
+        QString entry = QString("%1(%2,%3) defends %4(%5,%6)").arg(
+                    f->getItem()->getName(),
+                    QString::number(f->getX()),
+                    QString::number(f->getY()),
+                    name,
+                    QString::number(currentField->getX()),
+                    QString::number(currentField->getY()));
+        board->log(entry);
+    }
     f->getItem()->destroy();
     attacking->resolveMove(f);
 }
 
 void Item::move(Field* f){
     if(f != nullptr){
+        QString entry = QString("%1: %2(%3,%4) moves to (%5,%6)").arg(
+                      *player->getName(),
+                      this->name,
+                      QString::number(currentField->getX()),
+                      QString::number(currentField->getY()),
+                      QString::number(f->getX()),
+                      QString::number(f->getY()));
+
+
+        board->log(entry);
         this->currentField->setItem(nullptr);
         this->currentField = f;
         f->setItem(this);
@@ -173,6 +198,16 @@ void Item::swap(Field* f){
             this->move(f);
             return;
         }
+
+        QString entry = QString("%1: %2(%3,%4) swaps with %5(%6,%7)").arg(
+                    *player->getName(),
+                    name,
+                    QString::number(currentField->getX()),
+                    QString::number(currentField->getY()),
+                    f->getItem()->getName(),
+                    QString::number(f->getX()),
+                    QString::number(f->getY()));
+        board->log(entry);
         this->currentField->setItem(target);
         target->setField(this->currentField);
         f->setItem(this);
@@ -189,7 +224,9 @@ void Item::damage(Field* f){
     if(f!= nullptr){
         Item* target = f->getItem();
         if(target != nullptr){
-            qDebug() << this->name + " destroys " + target->getName();
+            QString entry = QString("%1: %2 hits %3").arg(*player->getName(),fullName(),f->getItem()->fullName());
+            board->log(entry);
+
             target->receiveHit(this);
         }
     }
@@ -198,7 +235,19 @@ void Item::damage(Field* f){
 void Item::endTurn(){
     this->resetState();
     board->removeWaitingItem();
-    board->changeActivePlayer();
+    board->nextTurn();
+}
+
+void Item::pass()
+{
+    if(defending){
+        qDebug() << "Can't pass until attack is resolved";
+        return;
+    }
+
+    QString entry = QString("%1 passed").arg(*player->getName());
+    board->log(entry);
+    endTurn();
 }
 
 void Item::resolveMove(Field* f){
@@ -214,6 +263,10 @@ void Item::destroy(){
             f->getItem()->removeLinkedField(this->currentField);
         }
     }
+
+    QString entry = QString("%1 destroyed").arg(fullName());
+    board->log(entry);
+
     this->resetState();
     this->currentField->setItem(nullptr);
     this->currentField = nullptr;
@@ -284,6 +337,14 @@ QVector<Field*>* Item::getLinkedFields(){
 
 QString Item::getName(){
     return this->name;
+}
+
+QString Item::fullName()
+{
+    return QString("%1(%2,%3)").arg(
+                name,
+                QString::number(currentField->getX()),
+                QString::number(currentField->getY()));
 }
 
 void Item::setName(QString newName){

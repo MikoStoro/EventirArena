@@ -21,7 +21,7 @@ class Window : public QWidget
 private:
     Q_OBJECT
     QGraphicsView* view = nullptr;
-    GameScreenUI gameUI;
+    GameScreenUI gameUI = GameScreenUI(this);
 
     Board* board;
 
@@ -40,6 +40,9 @@ public:
     //game functions
     void log(QString& entry);
     void displayPlayer(QString* player = nullptr, QColor* col = nullptr);
+    void displayTurn(int turnNo = 1);
+    void displayGold(int gold = 0);
+    void pass();
 
 signals:
 

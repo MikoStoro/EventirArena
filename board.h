@@ -17,6 +17,7 @@ private:
     QGraphicsScene* scene;
     QVector<Item*> items;
 
+    int turnNo = 1;
     Player* activePlayer = nullptr;
     int activePlayerIndex = 0;
     QVector<Player*> players;
@@ -47,7 +48,7 @@ public:
     int getPosition(int x);
 
     void setWaitingItem(Item* i = nullptr, QVector<Field*>* active = nullptr, bool locked = false);
-    void removeWaitingItem(bool keepState = false);
+    void removeWaitingItem(bool respectLock = false);
     void setActiveFields(QVector<Field*>* a = nullptr);
     void addACtiveField(Field* f);
     void removeActiveField(Field* f);
@@ -67,6 +68,9 @@ public:
     void addPlayer(int id);
     void setActivePlayer(Player* player);
     void changeActivePlayer();
+    int getTurnNo();
+    void nextTurn();
+    void pass();
 
     void setWindow(Window* win);
     void log(QString& entry);

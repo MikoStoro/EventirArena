@@ -1,7 +1,12 @@
 #include "gamescreenui.h"
+#include "window.h"
 
-GameScreenUI::GameScreenUI(){
+GameScreenUI::GameScreenUI(Window* win){
     playerLabel->setAlignment(Qt::AlignCenter);
+    turnLabel->setAlignment(Qt::AlignCenter);
+    goldLabel->setAlignment(Qt::AlignCenter);
+    this->window = win;
+    passBtn->connect(passBtn, &QPushButton::released, win, &Window::pass);
 
 }
 
@@ -23,10 +28,13 @@ void GameScreenUI::displayPlayer(QString* player, QColor* col){
     playerLabel->setPalette(palette);
 }
 
-void GameScreenUI::displayPiece(QString* pieceName)
-{
-//    QString str;
-//    if(pieceName == nullptr){str = "Piece: -";}
-//    else{str = "Piece: "; str.append(*pieceName);}
-//    currentPlayer->setText(str);
+void GameScreenUI::displayTurn(int turnNo){
+    QString temp = QString("Turn %1").arg(QString::number(turnNo));
+    turnLabel->setText(temp);
 }
+
+void GameScreenUI::displayGold(int gold){
+    QString temp = QString("Gold: \n %1").arg(QString::number(gold));
+    turnLabel->setText(temp);
+}
+

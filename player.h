@@ -24,6 +24,8 @@ public:
     void setName(QString name);
     QString* getName();
 
+    int getResources();
+
     QColor* getColor();
     void setColor(int r, int g, int b, int a = 255);
 
