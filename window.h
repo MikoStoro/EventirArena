@@ -28,6 +28,9 @@ private:
 
     void initMenuScreen();
     void clearScreen();
+protected:
+void contextMenuEvent(QContextMenuEvent *event);
+
 public:
     explicit Window(QWidget *parent = nullptr);
 
@@ -43,6 +46,7 @@ public:
     void displayTurn(int turnNo = 1);
     void displayGold(int gold = 0);
     void pass();
+    void showMenu(bool mode, int x = -1, int y = -1, Player* player = nullptr);
 
 signals:
 

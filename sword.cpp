@@ -4,16 +4,16 @@
 
 
 Sword::Sword(Field* curr, Player* player) : Item(curr,player){
-    this->name = "Sword";
+    this->name = "Sword";         id = SWORD;
 }
 Sword::Sword(Player* player) : Item(player){
-    this->name = "Sword";
+    this->name = "Sword";id = SWORD;
 }
 Sword::Sword(Field* curr) : Item(curr){
-    this->name = "Sword";
+    this->name = "Sword";id = SWORD;
 }
 Sword::Sword() : Item(){
-    this->name = "Sword";
+    this->name = "Sword";id = SWORD;
 }
 
 void Sword::switchMode(){

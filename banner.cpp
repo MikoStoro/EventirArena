@@ -4,15 +4,19 @@
 
 Banner::Banner(Field* curr, Player* player) : Item(curr,player){
     this->name = "Banner";
+    id = BANNER;
 }
 Banner::Banner(Player* player) : Item(player){
     this->name = "Banner";
+        id = BANNER;
 }
 Banner::Banner(Field* curr) : Item(curr){
     this->name = "Banner";
+        id = BANNER;
 }
 Banner::Banner() : Item(){
     this->name = "Banner";
+        id = BANNER;
 }
 
 void Banner::action(bool locked){

@@ -2,10 +2,10 @@
 #include "board.h"
 #include "field.h"
 
-Eye::Eye(Field* curr, Player* player) : Item(curr, player){this->name = "Eye";}
-Eye::Eye(Player* player) : Item(player){this->name = "Eye";}
-Eye::Eye(Field* curr) : Item(curr){this->name = "Eye";}
-Eye::Eye() : Item(){this->name = "Eye";}
+Eye::Eye(Field* curr, Player* player) : Item(curr, player){this->name = "Eye";    id = EYE;}
+Eye::Eye(Player* player) : Item(player){this->name = "Eye"; id = EYE;}
+Eye::Eye(Field* curr) : Item(curr){this->name = "Eye"; id = EYE;}
+Eye::Eye() : Item(){this->name = "Eye"; id = EYE;}
 
 void Eye::action(bool locked) {
     if(this->moveCounter >= 3){

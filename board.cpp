@@ -178,6 +178,7 @@ Board::Board(int boardSize, QGraphicsScene* scene){
     }
 
     void Board::fieldClicked(Field* f){
+
         if(state == WAITING){
             if(this->activeFields->contains(f)){
                 if(this->waitingItem != nullptr){
@@ -197,6 +198,18 @@ Board::Board(int boardSize, QGraphicsScene* scene){
         }
     }
 
+    void Board::fieldRightClicked(Field *f){
+        //will be changed
+        removeWaitingItem(true);
+        spawnField = f;
+        requestSpawn(f);
+    }
+
+    void Board::spawnItem(int id){
+        activePlayer->spawnItemById(id,spawnField,true);
+        spawnField = nullptr;
+    }
+
     void Board::performFieldAction(Field* f){
         if(f->getItem() != nullptr){
             Item* item = f->getItem();
@@ -214,6 +227,13 @@ Board::Board(int boardSize, QGraphicsScene* scene){
             Field* target = this->getField(x,y);
             target->setItem(item);
             item->setField(target);
+        }
+    }
+
+    void Board::requestSpawn(Field *f){
+        if(f!=nullptr){
+            spawnField = f;
+            window->showMenu(true, f->getTrueX(), f->getTrueY(), activePlayer);
         }
     }
 
@@ -268,6 +288,7 @@ Board::Board(int boardSize, QGraphicsScene* scene){
             qDebug() << "Can't pass until board is unlocked";
             return;
         }
+        spawnField = nullptr;
         if(waitingItem == nullptr){changeActivePlayer(); return;}
         waitingItem->pass();
     }

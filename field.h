@@ -28,11 +28,14 @@ public:
     void setItem(Item* item);
     void setText(QString str);
     void clicked();
+    void rightClicked();
     Board* getBoard();
     Item* getItem();
 
     int getX();
     int getY();
+    double getTrueX();
+    double getTrueY();
 
     void highlight(int mode);
     void setColor(QColor color);

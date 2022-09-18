@@ -39,5 +39,14 @@ enum messageResponses{
     FALSE,
 };
 
+enum pieceIDs{
+    SWORD,
+    SPEAR,
+    SHIELD,
+    BANNER,
+    EYE,
+    PIECE_COUNT
+};
+
 
 #endif // ENUMS_H

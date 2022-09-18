@@ -29,11 +29,13 @@ public:
     QColor* getColor();
     void setColor(int r, int g, int b, int a = 255);
 
+    QVector<Item*>* getSpareItems();
     void addSpareItem(Item* item);
     void addActiveItem(Item* item);
     void activateItem(Item* item);
     void spawnItem(int index, Field* target);
     void spawnItem(Item* item, Field* target);
+    void spawnItemById(int id, Field* target, bool free = false);
 
     void spawnItemFree(int index, Field* target);
     void spawnItemFree(Item* item, Field* target);

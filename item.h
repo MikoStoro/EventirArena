@@ -4,6 +4,7 @@
 #include <QString>
 #include <QColor>
 #include "pattern.h"
+#include "enums.h"
 
 class Pattern;
 class Field;
@@ -30,6 +31,8 @@ public:
     Item(Player* player);
     Item(Field* curr);
     Item();
+
+    int id = -1;
 
     Board* board = nullptr;
 

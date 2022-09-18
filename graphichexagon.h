@@ -2,7 +2,6 @@
 
 #ifndef GRAPHICHEXAGON_H
 #define GRAPHICHEXAGON_H
-#include "qwidget.h"
 #include <QGraphicsPolygonItem>
 #include <QGraphicsEffect>
 #include <QGraphicsColorizeEffect>
@@ -65,7 +64,11 @@ public:
     void resetBorder();
     void refreshColor();
 
+    double getX();
+    double getY();
+
 
 };
+
 
 #endif // GRAPHICHEXAGON_H

@@ -96,6 +96,11 @@ void Field::clicked(){
     this->board->fieldClicked(this);
 }
 
+void Field::rightClicked()
+{
+    this->board->fieldRightClicked(this);
+}
+
 
 Board* Field::getBoard(){
        return this->board;
@@ -130,4 +135,11 @@ int Field::getX(){
 
 int Field::getY(){
     return this->yPos;
+}
+
+double Field::getTrueX(){
+    return hex->getX();
+}
+double Field::getTrueY(){
+    return hex->getY();
 }

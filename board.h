@@ -11,6 +11,7 @@ class Window;
 class Board
 {
 private:
+    Q_GADGET
     int boardSize = 0;
     Field*** fields = nullptr;
     int* rowLengths;
@@ -25,6 +26,7 @@ private:
     int state = READY;
     Item* waitingItem = nullptr;
     QVector<Field*>* activeFields = nullptr;
+    Field* spawnField = nullptr;
     bool locked = false;
 
     Window* window = nullptr;
@@ -60,9 +62,12 @@ public:
     int getState();
 
     void fieldClicked(Field* f);
+    void fieldRightClicked(Field* f);
     void performFieldAction(Field* f);
 
     void setItem(int x, int y, Item* item);
+    void requestSpawn(Field* f = nullptr);
+
 
     void addPlayer(Player* player);
     void addPlayer(int id);
@@ -82,6 +87,10 @@ public:
     QColor* getHoverBorderColor();
 
     Player* getPlayer(int id);
+
+public slots:
+    void spawnItem(int id);
+
 };
 
 #endif // BOARD_H

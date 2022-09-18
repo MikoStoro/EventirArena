@@ -4,15 +4,16 @@
 
 Shield::Shield(Field* curr, Player* player) : Item(curr,player){
     this->setName("Shield");
+     id = SHIELD;
 }
 Shield::Shield(Player* player) : Item(player){
-    this->setName("Shield");
+    this->setName("Shield");     id = SHIELD;
 }
 Shield::Shield(Field* curr) : Item(curr){
-    this->setName("Shield");
+    this->setName("Shield");     id = SHIELD;
 }
 Shield::Shield() : Item(){
-    this->setName("Shield");
+    this->setName("Shield");     id = SHIELD;
 }
 
 void Shield::action(bool locked){

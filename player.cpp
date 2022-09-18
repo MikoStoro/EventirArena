@@ -42,6 +42,10 @@ void Player::setColor(int r, int g, int b, int a){
     this->playerColor = new QColor(r,g,b,a);
 }
 
+QVector<Item *> *Player::getSpareItems(){
+    return &spareItems;
+}
+
 void Player::addActiveItem(Item* item){
     this->activeItems.append(item);
 }
@@ -56,6 +60,26 @@ void Player::activateItem(Item* item){
     }
     if(!this->activeItems.contains(item)){
         this->activeItems.append(item);
+    }
+}
+
+void Player::spawnItem(int index, Field *target)
+{
+
+}
+
+void Player::spawnItem(Item *item, Field *target)
+{
+
+}
+
+void Player::spawnItemById(int id, Field *target, bool free){
+    foreach(Item* i, spareItems){
+        if(i->id == id){
+            if(free){spawnItemFree(i,target);}
+            else{spawnItem(i,target);}
+            break;
+        }
     }
 }
 

@@ -1,6 +1,11 @@
 #include "window.h"
+#include "qevent.h"
 
 
+
+void Window::contextMenuEvent(QContextMenuEvent *event){
+    //gameUI.piecesMenu->exec(event->globalPos());
+}
 
 Window::Window(QWidget *parent): QWidget{parent} {
     this->setWindowTitle("Eventir Arena");
@@ -42,6 +47,16 @@ void Window::displayGold(int gold){
 void Window::pass() {
     board->pass();
 }
+
+void Window::showMenu(bool mode, int x, int y, Player* player)
+{
+    if(mode && player != nullptr){
+        gameUI.displayPieces(x,y,player);
+    }else{
+        gameUI.hidePieces();
+    }
+}
+
 
 void Window::initGameScreen(){
     if(this->view == nullptr){return;}

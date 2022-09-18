@@ -22,11 +22,13 @@ void GraphicHexagon::mousePressEvent(QGraphicsSceneMouseEvent* event){
 }
 
 void GraphicHexagon::mouseReleaseEvent(QGraphicsSceneMouseEvent* event){
-    if(lastPressed & Qt::RightButton){
-        gHex->getBoard()->removeWaitingItem(true);
+    if(lastPressed & Qt::RightButton && hover && pressed){
+        gHex->rightClicked();
+        //gHex->getBoard()->removeWaitingItem(true);
+        this->pressed = false;
         return;
     }
-    if(lastPressed & Qt::LeftButton && hover && pressed){
+    else if(lastPressed & Qt::LeftButton && hover && pressed){
         if(this->gHex != nullptr){qDebug() << "Clicked " << gHex->getX() << gHex->getY() << '\n';}
         this->gHex->clicked();
         this->pressed = false;
@@ -197,6 +199,14 @@ void GraphicHexagon::resetBorder(){
 void GraphicHexagon::refreshColor(){
     this->setColor(*this->currentBorder);
     this->currentColor = this->baseColor;
+}
+
+double GraphicHexagon::getX(){
+    return cX;
+}
+
+double GraphicHexagon::getY(){
+    return cY;
 }
 
 

@@ -23,6 +23,7 @@ SOURCES += \
     pattern.cpp \
     player.cpp \
     shield.cpp \
+    spawnaction.cpp \
     spear.cpp \
     sword.cpp \
     window.cpp
@@ -42,6 +43,7 @@ HEADERS += \
     pattern.h \
     player.h \
     shield.h \
+    spawnaction.h \
     spear.h \
     sword.h \
     window.h
