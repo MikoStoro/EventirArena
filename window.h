@@ -48,7 +48,8 @@ public:
     void pass();
     void showMenu(bool mode, int x = -1, int y = -1, Player* player = nullptr);
 
-signals:
+public slots:
+    void enablePassBtn();
 
 };
 

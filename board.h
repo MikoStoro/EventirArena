@@ -23,6 +23,7 @@ private:
     int activePlayerIndex = 0;
     QVector<Player*> players;
 
+
     int state = READY;
     Item* waitingItem = nullptr;
     QVector<Field*>* activeFields = nullptr;
@@ -72,6 +73,7 @@ public:
     void addPlayer(Player* player);
     void addPlayer(int id);
     void setActivePlayer(Player* player);
+    QString* getActivePlayerName();
     void changeActivePlayer();
     int getTurnNo();
     void nextTurn();

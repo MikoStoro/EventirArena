@@ -263,6 +263,11 @@ Board::Board(int boardSize, QGraphicsScene* scene){
         }
     }
 
+    QString *Board::getActivePlayerName()
+    {
+        return activePlayer->getName();
+    }
+
     void Board::changeActivePlayer(){
         if(this->activePlayerIndex < players.size()-1){activePlayerIndex += 1;}
         else{this->activePlayerIndex = 0;}

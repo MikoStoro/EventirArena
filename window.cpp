@@ -1,5 +1,6 @@
 #include "window.h"
 #include "qevent.h"
+#include <QTimer>
 
 
 
@@ -45,6 +46,14 @@ void Window::displayGold(int gold){
 }
 
 void Window::pass() {
+    QPushButton* b = gameUI.passBtn;
+    //disable pass btn for 1s
+    b->setEnabled(false);
+    QTimer::singleShot(1000, this, SLOT(enablePassBtn()));
+
+    QString entry = QString("%1 passed").arg(*board->getActivePlayerName());
+    log(entry);
+
     board->pass();
 }
 
@@ -55,6 +64,10 @@ void Window::showMenu(bool mode, int x, int y, Player* player)
     }else{
         gameUI.hidePieces();
     }
+}
+
+void Window::enablePassBtn(){
+    gameUI.passBtn->setEnabled(true);
 }
 
 
@@ -69,14 +82,15 @@ void Window::initGameScreen(){
 
     QVBoxLayout* dataPanel = new QVBoxLayout;
 
-    dataPanel->addWidget(gameUI.turnLabel);
+    //dataPanel->addWidget(gameUI.turnLabel);
     dataPanel->addWidget(gameUI.playerLabel);
     dataPanel->addWidget(gameUI.goldLabel);
+    dataPanel->addWidget(gameUI.passBtn);
 
     UILayout->addLayout(dataPanel);
     UILayout->addWidget(gameUI.gameLog);
     gameUI.gameLog->setReadOnly(true);
-    UILayout->addWidget(gameUI.passBtn);
+
 
     this->setLayout(mainLayout);
 

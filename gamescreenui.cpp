@@ -4,8 +4,8 @@
 #include "board.h"
 
 GameScreenUI::GameScreenUI(Window* win){
-    playerLabel->setAlignment(Qt::AlignCenter);
     turnLabel->setAlignment(Qt::AlignCenter);
+    playerLabel->setAlignment(Qt::AlignCenter);
     goldLabel->setAlignment(Qt::AlignCenter);
     this->window = win;
     passBtn->connect(passBtn, &QPushButton::released, win, &Window::pass);
