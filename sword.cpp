@@ -4,16 +4,20 @@
 
 
 Sword::Sword(Field* curr, Player* player) : Item(curr,player){
-    this->name = "Sword";         id = SWORD;
+    this->name = "Sword";
+    id = SWORD;
 }
 Sword::Sword(Player* player) : Item(player){
-    this->name = "Sword";id = SWORD;
+    this->name = "Sword";
+    id = SWORD;
 }
 Sword::Sword(Field* curr) : Item(curr){
-    this->name = "Sword";id = SWORD;
+    this->name = "Sword";
+    id = SWORD;
 }
 Sword::Sword() : Item(){
-    this->name = "Sword";id = SWORD;
+    this->name = "Sword";
+    id = SWORD;
 }
 
 void Sword::switchMode(){
@@ -26,11 +30,11 @@ void Sword::switchMode(){
     }
 }
 
-void Sword::action(bool locked){
+void Sword::action(int state){
     if(this->movePattern == nullptr){return;}
     QVector<Field*>* adj = this->currentField->getFields(this->movePattern);
     adj->append(this->currentField);
-    this->currentField->getBoard()->setWaitingItem(this, adj, locked);
+    this->currentField->getBoard()->setWaitingItem(this, adj, state);
     this->markInteractions(adj);
 }
 

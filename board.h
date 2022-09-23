@@ -27,9 +27,8 @@ private:
     int state = READY;
     Item* waitingItem = nullptr;
     QVector<Field*>* activeFields = nullptr;
+    QVector<Field*> alteredFields;
     Field* spawnField = nullptr;
-    bool locked = false;
-
     Window* window = nullptr;
 
     QColor* baseFieldColor = new QColor(110,110,110, 200);
@@ -46,18 +45,21 @@ public:
     bool fieldExists(int x, int y);
     int size();
 
+
+
     QVector<Field*>* getAdjacenFields(Field* target);
     QVector<Field*>* getAdjacentFields(int x, int y);
     int getPosition(int x);
 
-    void setWaitingItem(Item* i = nullptr, QVector<Field*>* active = nullptr, bool locked = false);
-    void removeWaitingItem(bool respectLock = false);
+    void setWaitingItem(Item* i = nullptr, QVector<Field*>* active = nullptr, int newStaten = WAITING);
+    void removeWaitingItem(int level = LOCKED);
     void setActiveFields(QVector<Field*>* a = nullptr);
     void addACtiveField(Field* f);
+    void addAlteredField(Field* f);
+    void resetAlteredFields();
     void removeActiveField(Field* f);
     void addActiveField(Field* f);
     QVector<Field*>* getActiveFields();
-    void setLocked(bool val);
 
     void setState(int state);
     int getState();

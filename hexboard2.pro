@@ -13,6 +13,7 @@ SOURCES += \
     banner.cpp \
     board.cpp \
     coords.cpp \
+    crown.cpp \
     eye.cpp \
     field.cpp \
     fieldcontainer.cpp \
@@ -32,6 +33,7 @@ HEADERS += \
     banner.h \
     board.h \
     coords.h \
+    crown.h \
     directions.h \
     enums.h \
     eye.h \

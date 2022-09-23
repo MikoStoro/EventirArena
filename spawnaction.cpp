@@ -1,12 +1,10 @@
 #include "spawnaction.h"
 
-SpawnAction::SpawnAction(QObject *parent)
-    : QAction{parent}
-{
+SpawnAction::SpawnAction(QWidget *parent): QPushButton(parent){
 
 }
 
-SpawnAction::SpawnAction(QString text, int id, QObject *parent):QAction(text,parent){
+SpawnAction::SpawnAction(QString text, int id, QWidget *parent):QPushButton(text,parent){
     this->id = id;
     this->name = text;
 }

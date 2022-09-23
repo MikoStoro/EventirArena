@@ -73,7 +73,7 @@ QVector<Field*>* Spear::processCollisions(){
     return ret;
 }
 
-void Spear::action(bool locked) {
+void Spear::action(int state) {
     this->clearFieldBuffer();
     Board* b = this->currentField->getBoard();
 
@@ -94,7 +94,7 @@ void Spear::action(bool locked) {
     delete moveTemp;
 
     QVector<Field*>* activeFields = this->processCollisions();
-    b->setWaitingItem(this, activeFields, locked);
+    b->setWaitingItem(this, activeFields, state);
     this->markSpearInteractions();
 
 }

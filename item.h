@@ -21,6 +21,7 @@ protected:
 
     QVector<Field*> linkedFields;
     bool defending = false;
+    bool locked = false;
     Item* attackingItem = nullptr;
     QVector<Field*>* adjacentFields = nullptr;
 
@@ -43,7 +44,7 @@ public:
     void setPlayer(Player* player, bool active = false);
     Player* getPlayer();
 
-    virtual void action(bool locked = false);
+    virtual void action(int state = WAITING);
     virtual void markInteractions(QVector<Field*>* targets);
     //virtual void markDefense();
     virtual void processInput(Field* f);
@@ -60,7 +61,7 @@ public:
     virtual void receiveHit(Item* source);
     virtual void resetState();
     virtual bool isDefended();
-    virtual bool isDefending();
+    virtual bool isLocked();
 
     virtual void sendMessage(int messageId);
     virtual void sendMessageAround(int messageId);

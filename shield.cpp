@@ -16,9 +16,9 @@ Shield::Shield() : Item(){
     this->setName("Shield");     id = SHIELD;
 }
 
-void Shield::action(bool locked){
+void Shield::action(int state){
     QVector<Field*>* adj = this->currentField->getFields(this->movePattern);
-    this->currentField->getBoard()->setWaitingItem(this, adj, locked);
+    this->currentField->getBoard()->setWaitingItem(this, adj, state);
     this->markInteractions(this->adjacentFields);
 }
 

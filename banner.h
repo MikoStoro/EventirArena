@@ -15,7 +15,7 @@ public:
     Banner(Field* curr);
     Banner();
 
-    void action(bool locked = false) override;
+    void action(int state = WAITING) override;
     void markInteractions(QVector<Field*>* targets) override;
     void markSpecialInteractions(QVector<Field*>* targets);
 

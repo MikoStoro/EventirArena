@@ -30,6 +30,7 @@ public:
     QLabel* goldLabel = new QLabel("Gold \n -");
 
     QMenu* piecesMenu = nullptr;
+    QWidget* piecesSidebar = nullptr;
 
     QMap<int,SpawnAction*>* actions = new QMap<int,SpawnAction*>;
 
@@ -38,7 +39,7 @@ public:
     void displayPlayer(QString* player = nullptr, QColor* col = nullptr);
     void displayTurn(int turnNo = 1);
     void displayGold(int gold = 0);
-    void displayPieces(int x, int y, Player* player);
+    void displayPieces( Player* player);
     void updatePieces(Player* player);
     void hidePieces();
 };

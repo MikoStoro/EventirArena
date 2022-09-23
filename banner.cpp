@@ -19,10 +19,10 @@ Banner::Banner() : Item(){
         id = BANNER;
 }
 
-void Banner::action(bool locked){
+void Banner::action(int state){
     if(this->movePattern == nullptr){return;}
     QVector<Field*>* adj = this->currentField->getFields(this->movePattern);
-    this->currentField->getBoard()->setWaitingItem(this, adj, locked);
+    this->currentField->getBoard()->setWaitingItem(this, adj, state);
     this->markInteractions(adj);
 }
 
@@ -73,7 +73,7 @@ void Banner::processInput(Field* f){
         this->actionTarget->move(f);
         b->removeWaitingItem();
         this->resetState();
-        this->actionTarget->action(true);
+        this->actionTarget->action(LOCKED);
 
     }
 
@@ -82,7 +82,7 @@ void Banner::processInput(Field* f){
         this->move(f);
         this->moved = true;
         b->removeWaitingItem();
-        this->action(true);
+        this->action(LOCKED);
 
     }else if(target->getPlayer() == this->player){
         //ally clicked
@@ -96,7 +96,7 @@ void Banner::moveTarget(Item* target){
     Board* b = this->currentField->getBoard();
     this->actionTarget = target;
     this->specialAction = true;
-    b->setWaitingItem(this, adj, true);
+    b->setWaitingItem(this, adj, LOCKED);
     this->markInteractions(adj);
 }
 

@@ -69,8 +69,7 @@ Board::Board(int boardSize, QGraphicsScene* scene){
     }
 }
 
-
-    Field* Board::getField(int x, int y){
+Field* Board::getField(int x, int y){
         if(fieldExists(x,y)){
             return(fields[x][y]);
         }else{
@@ -105,31 +104,24 @@ Board::Board(int boardSize, QGraphicsScene* scene){
         return LOWER;
     }
 
-    void Board::setWaitingItem(Item* i, QVector<Field*>* active, bool locked){
+    void Board::setWaitingItem(Item* i, QVector<Field*>* active, int newState){
         if(this->state == READY){
-            this->state = WAITING;
+            this->state = newState;
             this->waitingItem = i;
             this->setActiveFields(active);
-            this->locked = locked;
         }
 
     }
 
-    void Board::removeWaitingItem(bool respectLock){
-        if(locked && respectLock){return;}
-        if(this->state == WAITING){
+    void Board::removeWaitingItem(int level){
+        if(level < state){return;}
+        if(this->state != READY){
             this->state = READY;
             //if(!keepState){this->waitingItem->resetState();}
             this->waitingItem = nullptr;
             this->setActiveFields(nullptr);
-            this->locked = false;
         }
     }
-
-    void Board::setLocked(bool val){
-        this->locked = val;
-    }
-
 
     void Board::setState(int state){
         this->state = state;
@@ -152,6 +144,17 @@ Board::Board(int boardSize, QGraphicsScene* scene){
                 f->highlight(ACTIVE);
             }
         }
+    }
+
+    void Board::addAlteredField(Field *f){
+        alteredFields.append(f);
+    }
+
+    void Board::resetAlteredFields(){
+        foreach(Field* f, alteredFields){
+            f->highlight(NONE);
+        }
+        alteredFields.clear();
     }
 
     void Board::removeActiveField(Field* f){
@@ -179,14 +182,15 @@ Board::Board(int boardSize, QGraphicsScene* scene){
 
     void Board::fieldClicked(Field* f){
 
-        if(state == WAITING){
-            if(this->activeFields->contains(f)){
+        if(state >= WAITING){
+            if(this->activeFields != nullptr && this->activeFields->contains(f)){
                 if(this->waitingItem != nullptr){
                     qDebug() << "Clicked highlighted field";
                     this->waitingItem->processInput(f);
                 }
             }else{
-                if(!this->locked){
+                if(state<LOCKED){
+                    window->hideMenu();
                     this->removeWaitingItem();
                     this->performFieldAction(f);
                 }
@@ -200,14 +204,23 @@ Board::Board(int boardSize, QGraphicsScene* scene){
 
     void Board::fieldRightClicked(Field *f){
         //will be changed
-        removeWaitingItem(true);
-        spawnField = f;
-        requestSpawn(f);
+        if(state == READY){
+            removeWaitingItem(WAITING);
+            spawnField = f;
+            requestSpawn(f);
+        }
     }
 
     void Board::spawnItem(int id){
         activePlayer->spawnItemById(id,spawnField,true);
+        setState(READY);
+        spawnField->highlight(NONE);
         spawnField = nullptr;
+
+        if(waitingItem != nullptr){
+            waitingItem->receiveMessage(SPAWN_RESOLVED);
+        }
+        window->hideMenu();
     }
 
     void Board::performFieldAction(Field* f){
@@ -231,9 +244,11 @@ Board::Board(int boardSize, QGraphicsScene* scene){
     }
 
     void Board::requestSpawn(Field *f){
-        if(f!=nullptr){
+        if(f!=nullptr && f->getItem() == nullptr){
             spawnField = f;
-            window->showMenu(true, f->getTrueX(), f->getTrueY(), activePlayer);
+            f->highlight(SPECIAL);
+            setState(LOCKED);
+            window->showMenu(activePlayer);
         }
     }
 
@@ -284,17 +299,19 @@ Board::Board(int boardSize, QGraphicsScene* scene){
 
     void Board::nextTurn(){
         changeActivePlayer();
+        resetAlteredFields();
+        window->hideMenu();
         turnNo++;
         window->displayTurn(turnNo);
     }
 
     void Board::pass(){
-        if(waitingItem!=nullptr && waitingItem->isDefending()){
+        if(state>=SECURE){
             qDebug() << "Can't pass until board is unlocked";
             return;
         }
         spawnField = nullptr;
-        if(waitingItem == nullptr){changeActivePlayer(); return;}
+        if(waitingItem == nullptr){nextTurn(); return;}
         waitingItem->pass();
     }
 

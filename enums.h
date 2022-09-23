@@ -7,9 +7,11 @@ enum position{
     LOWER
 };
 
-enum state{
-    READY,
-    WAITING
+enum boardStates{
+    READY = 0,
+    WAITING = 1,
+    LOCKED = 2,
+    SECURE = 3
 };
 
 enum players{
@@ -30,7 +32,8 @@ enum messageIDs{
     TURN_ENDED,
     RESET_STATE,
     DEFEND,
-    NO_FIELDS
+    NO_FIELDS,
+    SPAWN_RESOLVED
 };
 
 enum messageResponses{
@@ -45,8 +48,11 @@ enum pieceIDs{
     SHIELD,
     BANNER,
     EYE,
+    CROWN,
     PIECE_COUNT
 };
+
+
 
 
 #endif // ENUMS_H

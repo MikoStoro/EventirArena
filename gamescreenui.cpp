@@ -4,34 +4,68 @@
 #include "board.h"
 
 GameScreenUI::GameScreenUI(Window* win){
+    this->window = win;
+    QVBoxLayout* mainLayout = new QVBoxLayout;
+
+    QHBoxLayout* gameLayout = new QHBoxLayout;
+    mainLayout->addLayout(gameLayout);
+
+    piecesSidebar = new QWidget(win);
+    QVBoxLayout* piecesSidebarLayout = new QVBoxLayout;
+    piecesSidebar->setLayout(piecesSidebarLayout);
+    piecesSidebar->setVisible(false);
+
+    gameLayout->addWidget(piecesSidebar);
+    gameLayout->addWidget(win->getView());
+
+    QHBoxLayout* UILayout = new QHBoxLayout;
+    mainLayout->addLayout(UILayout);
+
+
+    QVBoxLayout* dataPanel = new QVBoxLayout;
+
+    //dataPanel->addWidget(gameUI.turnLabel);
+    dataPanel->addWidget(playerLabel);
+    dataPanel->addWidget(goldLabel);
+    dataPanel->addWidget(passBtn);
+
+    UILayout->addLayout(dataPanel);
+    UILayout->addWidget(gameLog);
+    gameLog->setReadOnly(true);
+
+
+    win->setLayout(mainLayout);
+
+
     turnLabel->setAlignment(Qt::AlignCenter);
     playerLabel->setAlignment(Qt::AlignCenter);
     goldLabel->setAlignment(Qt::AlignCenter);
-    this->window = win;
+
     passBtn->connect(passBtn, &QPushButton::released, win, &Window::pass);
 
     piecesMenu = new QMenu(win);
 
-
-    Board* b = window->getBoard();
     SpawnAction* a = new SpawnAction("Sword", SWORD, piecesMenu);
-    a->connect(a, &QAction::triggered, this, [this](){window->getBoard()->spawnItem(SWORD);});
+    a->connect(a, &QPushButton::released, this, [this](){window->getBoard()->spawnItem(SWORD);});
     actions->insert(SWORD,a);
     a = new SpawnAction("Spear", SPEAR, piecesMenu);
-    a->connect(a, &QAction::triggered, this, [this](){window->getBoard()->spawnItem(SPEAR);});
+    a->connect(a, &QPushButton::released, this, [this](){window->getBoard()->spawnItem(SPEAR);});
     actions->insert(SPEAR,a);
     a = new SpawnAction("Shield", SHIELD, piecesMenu);
-    a->connect(a, &QAction::triggered,this, [this](){window->getBoard()->spawnItem(SHIELD);});
+    a->connect(a, &QPushButton::released,this, [this](){window->getBoard()->spawnItem(SHIELD);});
     actions->insert(SHIELD,a);
     a = new SpawnAction("Banner", BANNER, piecesMenu);
-    a->connect(a, &QAction::triggered, this, [this](){window->getBoard()->spawnItem(BANNER);});
+    a->connect(a, &QPushButton::released, this, [this](){window->getBoard()->spawnItem(BANNER);});
     actions->insert(BANNER,a);
     a = new SpawnAction("Eye", EYE, piecesMenu);
-    a->connect(a, &QAction::triggered, this, [this](){window->getBoard()->spawnItem(EYE);});
+    a->connect(a, &QPushButton::released, this, [this](){window->getBoard()->spawnItem(EYE);});
     actions->insert(EYE,a);
+    a = new SpawnAction("Crown", CROWN, piecesMenu);
+    a->connect(a, &QPushButton::released,this, [this](){window->getBoard()->spawnItem(CROWN);});
+    actions->insert(CROWN,a);
 
     foreach(SpawnAction* a, actions->values()){
-        piecesMenu->addAction(a);
+        piecesSidebarLayout->addWidget(a);
     }
 }
 
@@ -63,12 +97,11 @@ void GameScreenUI::displayGold(int gold){
     turnLabel->setText(temp);
 }
 
-void GameScreenUI::displayPieces(int x, int y, Player* player){
+void GameScreenUI::displayPieces(Player* player){
     updatePieces(player);
-    QSize s = piecesMenu->sizeHint();
-    piecesMenu->setGeometry(x,y,s.width(), s.height());
-    piecesMenu->exec(QCursor::pos());
+    piecesSidebar->setVisible(true);
 }
+
 
 void GameScreenUI::updatePieces(Player *player){
     foreach(SpawnAction* a, actions->values()){ a->resetCount(); a->setEnabled(true);}
@@ -84,6 +117,6 @@ void GameScreenUI::updatePieces(Player *player){
 }
 
 void GameScreenUI::hidePieces(){
-    piecesMenu->hide();
+    piecesSidebar->setVisible(false);
 }
 

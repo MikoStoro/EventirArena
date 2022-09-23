@@ -1,9 +1,9 @@
 #ifndef SPAWNACTION_H
 #define SPAWNACTION_H
 
-#include <QAction>
+#include <QPushButton>
 
-class SpawnAction : public QAction
+class SpawnAction : public QPushButton
 {
 private:
 
@@ -11,8 +11,8 @@ private:
     QString name = "";
     int id = -1;
 public:
-    explicit SpawnAction(QObject *parent = nullptr);
-    explicit SpawnAction(QString text, int id, QObject* parent = nullptr);
+    explicit SpawnAction(QWidget *parent = nullptr);
+    explicit SpawnAction(QString text, int id, QWidget* parent = nullptr);
 
     void countUp();
     void resetCount();

@@ -7,7 +7,7 @@ Eye::Eye(Player* player) : Item(player){this->name = "Eye"; id = EYE;}
 Eye::Eye(Field* curr) : Item(curr){this->name = "Eye"; id = EYE;}
 Eye::Eye() : Item(){this->name = "Eye"; id = EYE;}
 
-void Eye::action(bool locked) {
+void Eye::action(int state) {
     if(this->moveCounter >= 3){
         this->resetState();
         this->endTurn();
@@ -16,7 +16,7 @@ void Eye::action(bool locked) {
 
      if(this->movePattern == nullptr){return;}
      QVector<Field*>* adj = this->currentField->getFields(this->movePattern);
-     this->currentField->getBoard()->setWaitingItem(this, adj, locked);
+     this->currentField->getBoard()->setWaitingItem(this, adj, state);
      this->markInteractions(adj);
 }
 void Eye::processInput(Field* f) {
@@ -36,7 +36,7 @@ void Eye::processInput(Field* f) {
         this->swap(f);
     }
     b->removeWaitingItem();
-    this->action(true);
+    this->action(LOCKED);
 }
 
 void Eye::markInteractions(QVector<Field*>* targets) {

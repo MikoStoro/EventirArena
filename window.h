@@ -21,18 +21,47 @@ class Window : public QWidget
 private:
     Q_OBJECT
     QGraphicsView* view = nullptr;
-    GameScreenUI gameUI = GameScreenUI(this);
+    GameScreenUI* gameUI = nullptr;
 
     Board* board;
 
 
     void initMenuScreen();
-    void clearScreen();
+    void clearScreen();//    if(this->view == nullptr){return;}
+
+    //    QVBoxLayout* mainLayout = new QVBoxLayout;
+
+    //    QHBoxLayout* gameLayout = new QHBoxLayout;
+    //    mainLayout->addLayout(gameLayout);
+
+    //    QWidget* piecesSidebar = new QWidget(this);
+    //    QVBoxLayout* piecesSidebarLayout = new QVBoxLayout;
+    //    piecesSidebar->setLayout(piecesSidebarLayout);
+    //    //piecesSidebar
+
+
+    //    gameLayout->addLayout(piecesSidebarLayout);
+    //    gameLayout->addWidget(view);
+
+    //    QHBoxLayout* UILayout = new QHBoxLayout;
+    //    mainLayout->addLayout(UILayout);
+
+
+    //    QVBoxLayout* dataPanel = new QVBoxLayout;
+
+    //    //dataPanel->addWidget(gameUI.turnLabel);
+    //    dataPanel->addWidget(gameUI.playerLabel);
+    //    dataPanel->addWidget(gameUI.goldLabel);
+    //    dataPanel->addWidget(gameUI.passBtn);
+
+    //    UILayout->addLayout(dataPanel);
+    //    UILayout->addWidget(gameUI.gameLog);
+    //    gameUI.gameLog->setReadOnly(true);
+
 protected:
-void contextMenuEvent(QContextMenuEvent *event);
 
 public:
-    explicit Window(QWidget *parent = nullptr);
+    explicit Window(QGraphicsView* view, QWidget *parent = nullptr);
 
     void initGameScreen();
 
@@ -46,8 +75,10 @@ public:
     void displayTurn(int turnNo = 1);
     void displayGold(int gold = 0);
     void pass();
-    void showMenu(bool mode, int x = -1, int y = -1, Player* player = nullptr);
+    void showMenu(Player* player = nullptr);
+    void hideMenu();
 
+    QGraphicsView *getView();
 public slots:
     void enablePassBtn();
 

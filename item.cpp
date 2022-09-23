@@ -38,8 +38,8 @@ void Item::createMovePattern(int boardSize){
 
 void Item::setPlayer(Player* player, bool active){
     this->player = player;
-    if(active){player->addActiveItem(this);}
-    else{player->addSpareItem(this);}
+//    if(active){player->addActiveItem(this);}
+//    else{player->addSpareItem(this);}
 }
 
 Player* Item::getPlayer(){
@@ -75,11 +75,11 @@ void Item::updateAdjacentFields(){
     }
 }
 
-void Item::action(bool locked){
+void Item::action(int state){
     if(this->movePattern == nullptr){return;}
 
     QVector<Field*>* adj = this->currentField->getFields(this->movePattern);
-    board->setWaitingItem(this, adj, locked);
+    board->setWaitingItem(this, adj, state);
     this->markInteractions(adj);
 }
 
@@ -109,7 +109,7 @@ void Item::defend(){
     if(!defenders->empty()){
         defenders->append(this->currentField);
         this->defending = true;
-        this->board->setWaitingItem(this, defenders, true);
+        this->board->setWaitingItem(this, defenders, SECURE);
     }else{
         delete defenders;
         Item* a = this->attackingItem;
@@ -130,8 +130,9 @@ bool Item::isDefended(){
     return false;
 }
 
-bool Item::isDefending(){
-    return defending;
+
+bool Item::isLocked(){
+    return(locked||defending);
 }
 
 void Item::processInput(Field* f){
@@ -234,7 +235,7 @@ void Item::damage(Field* f){
 
 void Item::endTurn(){
     this->resetState();
-    board->removeWaitingItem();
+    board->removeWaitingItem(SECURE);
     board->nextTurn();
 }
 
@@ -244,9 +245,6 @@ void Item::pass()
         qDebug() << "Can't pass until attack is resolved";
         return;
     }
-
-    QString entry = QString("%1 passed").arg(*player->getName());
-    board->log(entry);
     endTurn();
 }
 
@@ -278,6 +276,7 @@ void Item::receiveHit(Item* source){
     this->attackingItem = source;
     this->defend();
 }
+
 
 void Item::resetState(){
     this->defending = false;

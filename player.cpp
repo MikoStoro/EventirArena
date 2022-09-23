@@ -1,7 +1,15 @@
 #include "player.h"
+#include "crown.h"
 #include "enums.h"
 #include "field.h"
 #include <QDebug>
+
+#include "sword.h"
+#include "shield.h"
+#include "banner.h"
+#include "spear.h"
+#include "eye.h"
+
 
 Player::Player()
 {
@@ -11,6 +19,23 @@ Player::Player()
 Player::Player(int id, QString name){
     this->id = id;
     this->name = name;
+}
+
+void Player::initBasicItems()
+{
+    addSpareItem(createItemById(SWORD));
+    addSpareItem(createItemById(SWORD));
+    addSpareItem(createItemById(SWORD));
+    addSpareItem(createItemById(SPEAR));
+    addSpareItem(createItemById(SPEAR));
+    addSpareItem(createItemById(SPEAR));
+    addSpareItem(createItemById(SHIELD));
+    addSpareItem(createItemById(SHIELD));
+    addSpareItem(createItemById(BANNER));
+    addSpareItem(createItemById(BANNER));
+    addSpareItem(createItemById(EYE));
+    addSpareItem(createItemById(EYE));
+    addSpareItem(createItemById(CROWN));
 }
 
 void Player::setId(int id){
@@ -83,6 +108,11 @@ void Player::spawnItemById(int id, Field *target, bool free){
     }
 }
 
+bool Player::canSpawnItem(){
+    if(spareItems.empty()){return false;}
+    return true;
+}
+
 void Player::spawnItemFree(int index, Field* target){
     if(index < spareItems.size()){
         Item* temp = spareItems[index];
@@ -116,4 +146,33 @@ void Player::returnItem(Item* target){
         this->spareItems.append(target);
     }else{ qDebug("Item existn't"); }
 }
+
+Item *Player::createItemById(int id){
+    Item* ret;
+    switch(id){
+        case SWORD:
+            ret = new Sword(this);
+            break;
+        case SPEAR:
+            ret = new Spear(this);
+            break;
+        case SHIELD:
+            ret = new Shield(this);
+            break;
+        case BANNER:
+            ret = new Banner(this);
+            break;
+        case EYE:
+            ret = new Eye(this);
+            break;
+        case CROWN:
+        //change after adding crown
+            ret = new Crown(this);
+            break;
+        default:
+            ret = nullptr;
+    }
+    return ret;
+}
+
 

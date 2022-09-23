@@ -28,7 +28,7 @@ public:
     Spear(Field* curr);
     Spear();
 
-    void action(bool locked = false) override;
+    void action(int state = WAITING) override;
     void processInput(Field* f) override;
     void markSpearInteractions();
     void resolveMove(Field* f) override;

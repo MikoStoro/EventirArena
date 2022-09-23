@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include "item.h"
+
 #include <QColor>
 #include <QString>
 
@@ -17,6 +18,8 @@ private:
 public:
     Player();
     Player(int id, QString name = "player");
+
+    void initBasicItems();
 
     void setId(int id);
     int getId();
@@ -37,12 +40,15 @@ public:
     void spawnItem(Item* item, Field* target);
     void spawnItemById(int id, Field* target, bool free = false);
 
+    bool canSpawnItem();
+
     void spawnItemFree(int index, Field* target);
     void spawnItemFree(Item* item, Field* target);
 
     void returnItem(Field* target);
     void returnItem(Item* target);
 
+    Item *createItemById(int id);
 };
 
 #endif // PLAYER_H

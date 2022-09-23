@@ -113,6 +113,7 @@ Item* Field::getItem(){
 
 
 void Field::highlight(int mode){
+    board->addAlteredField(this);
     this->hex->highlight(mode);
 }
 

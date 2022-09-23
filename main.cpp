@@ -26,48 +26,46 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-
     QGraphicsScene* scene = new QGraphicsScene();
     QGraphicsView* view = new QGraphicsView(scene);
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    Window win;
+    Window win(view);
     win.setView(view);
     Board board(5,scene);
     win.setBoard(&board);
-    win.initGameScreen();
-
     Player* p1 = new Player(A);
     p1->setColor(255,0,0,128);
     p1->setName(QString("Red"));
+    p1->initBasicItems();
     board.addPlayer(p1);
     Player* p2 = new Player(B);
     p2->setColor(0,0,255,128);
     p2->setName(QString("Blue"));
+    p2->initBasicItems();
     board.setActivePlayer(p1);
     board.addPlayer(p2);
 
-    Item* test = new Sword(p1);
-    board.setItem(1,1,test);
-    p1->activateItem(test);
-    Item* test2 = new Banner(p2);
-    board.setItem(5,5, test2);
-    p2->activateItem(test2);
-    Item* test5 = new Shield(p2);
-    board.setItem(4,4, test5);
-    p2->activateItem(test5);
-    Item* test3 = new Spear(p1);
-    board.setItem(0,2,test3);
-    Item* test6 = new Eye(p1);
-    board.setItem(1,2,test6);
-    p1->activateItem(test6);
-    Item* test4 = new Shield(p2);
-    board.setItem(5,6,test4);
-    p2->activateItem(test4);
+//    Item* test = new Sword(p1);
+//    board.setItem(1,1,test);
+//    p1->activateItem(test);
+//    Item* test2 = new Banner(p2);
+//    board.setItem(5,5, test2);
+//    p2->activateItem(test2);
+//    Item* test5 = new Shield(p2);
+//    board.setItem(4,4, test5);
+//    p2->activateItem(test5);
+//    Item* test3 = new Spear(p1);
+//    board.setItem(0,2,test3);
+//    Item* test6 = new Eye(p1);
+//    board.setItem(1,2,test6);
+//    p1->activateItem(test6);
+//    Item* test4 = new Shield(p2);
+//    board.setItem(5,6,test4);
+//    p2->activateItem(test4);
 
     win.show();
-    //view->show();
 
     return a.exec();
 }
