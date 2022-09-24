@@ -113,3 +113,9 @@ int Crown::receiveMessage(int messageId, Item *sender)
         Item::receiveMessage(messageId, sender);
     }
 }
+
+void Crown::destroy()
+{
+    Item::destroy();
+    board->eliminatePlayer(this->player);
+}

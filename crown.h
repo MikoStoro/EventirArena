@@ -22,7 +22,7 @@ public:
     void markInteractions(QVector<Field*>* targets) override;
     void resetState() override;
     int receiveMessage(int messageId, Item* sender = nullptr) override;
-
+    void destroy() override;
 };
 
 #endif // CROWN_H

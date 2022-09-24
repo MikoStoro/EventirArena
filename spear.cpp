@@ -8,15 +8,23 @@
 Spear::Spear(Field* curr, Player* player) : Item(curr,player){
     this->name = "Spear";
     createMovePattern(this->currentField->getBoard()->size());
-         id = SPEAR;
+    id = SPEAR;
 }
-Spear::Spear(Player* player) : Item(player){this->name = "Spear";         id = SPEAR;}
+
+Spear::Spear(Player* player) : Item(player){
+    this->name = "Spear";
+    id = SPEAR;
+}
+
 Spear::Spear(Field* curr) : Item(curr){
     this->name = "Spear";
     createMovePattern(this->currentField->getBoard()->size());
-             id = SPEAR;
+    id = SPEAR;
 }
-Spear::Spear() : Item(){this->name = "Spear";         id = SPEAR;}
+Spear::Spear() : Item(){
+    this->name = "Spear";
+    id = SPEAR;
+}
 
 void Spear::createMovePattern(int boardSize){
     if(this->movePattern != nullptr){delete this->movePattern;}
@@ -69,7 +77,6 @@ QVector<Field*>* Spear::processCollisions(){
         }
         ret->append(p.move);
     }
-
     return ret;
 }
 

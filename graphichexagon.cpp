@@ -29,7 +29,9 @@ void GraphicHexagon::mouseReleaseEvent(QGraphicsSceneMouseEvent* event){
         return;
     }
     else if(lastPressed & Qt::LeftButton && hover && pressed){
-        if(this->gHex != nullptr){qDebug() << "Clicked " << gHex->getX() << gHex->getY() << '\n';}
+        if(this->gHex != nullptr){
+            qDebug() << "Clicked " << gHex->getX() << gHex->getY() << '\n';
+        }
         this->gHex->clicked();
         this->pressed = false;
         //qDebug("released");

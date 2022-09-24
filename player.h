@@ -33,6 +33,7 @@ public:
     void setColor(int r, int g, int b, int a = 255);
 
     QVector<Item*>* getSpareItems();
+    QVector<Item*>* getActiveItems();
     void addSpareItem(Item* item);
     void addActiveItem(Item* item);
     void activateItem(Item* item);

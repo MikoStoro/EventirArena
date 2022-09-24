@@ -5,14 +5,16 @@
 #include "window.h"
 
 #include <QDebug>
+#include <QString>
 
-Board::Board(){   }
+Board::Board(){}
 Board::Board(int boardSize, QGraphicsScene* scene){
 
     this->scene = scene;
     this->boardSize = boardSize;
     this->fields = new Field**[boardSize*2-1];
     this->rowLengths = new int[boardSize*2-1];
+    height = boardSize*2-1;
 
     const float v3 = sqrt(3);
     int size = 45;
@@ -58,7 +60,7 @@ Board::Board(int boardSize, QGraphicsScene* scene){
 
             Field* field = new Field(yindex,j, this);
             field->linkGraphicsHex(hex);
-            qDebug() << yindex << " " << j << " " << boardSize+i+1 << " " << boardSize*2-1 << '\n';
+            //qDebug() << yindex << " " << j << " " << boardSize+i+1 << " " << boardSize*2-1 << '\n';
             fields[yindex][j] = field;
 
             scene->addItem(hex);
@@ -67,6 +69,91 @@ Board::Board(int boardSize, QGraphicsScene* scene){
         rowX += 0.5*dist;
         rowY -= dist*v3/2;
     }
+
+    generateStartingPositions();
+}
+
+void Board::generateStartingPositions(){
+        //startingFields[0]
+    int maxIndex = rowLengths[0]-1;
+    for(int x = 1; x < maxIndex; x++){
+        startingFields[0].append(getField(0,x));
+    }
+
+    foreach(Field* f, startingFields[0]){
+        f->highlight(SPECIAL);
+        qDebug()<<"A";
+    }
+
+    //startingField[1]
+    maxIndex = boardSize-1;
+    for(int y = 1; y < maxIndex; y++){
+        int x = rowLengths[y]-1;
+        startingFields[1].append(getField(y, x));
+    }
+
+    foreach(Field* f, startingFields[1]){
+        f->highlight(SPECIAL);
+    }
+
+    //startingField[2]
+    maxIndex = height-1;
+    for(int y = boardSize; y < maxIndex; y++){
+        int x = rowLengths[y]-1;
+        qDebug() << y << x;
+        startingFields[2].append(getField(y,x));
+    }
+
+    foreach(Field* f, startingFields[2]){
+        f->highlight(SPECIAL);
+        qDebug()<<"A";
+    }
+
+    //startingField[3]
+    maxIndex = rowLengths[height-1]-1;
+    for(int x = 1; x<maxIndex; x++){
+        startingFields[3].append(getField(height-1, x));
+    }
+
+    foreach(Field* f, startingFields[3]){
+        f->highlight(SPECIAL);
+    }
+
+    //startingFields[4]
+    maxIndex = height-1;
+    for(int y = boardSize; y < maxIndex; y++){
+        startingFields[4].append(getField(y,0));
+    }
+
+    foreach(Field* f, startingFields[4]){
+        f->highlight(SPECIAL);
+    }
+
+    maxIndex = boardSize-1;
+    for(int y = 1; y < maxIndex; y++){
+        startingFields[5].append(getField(y,0));
+    }
+
+    foreach(Field* f, startingFields[5]){
+        f->highlight(SPECIAL);
+    }
+}
+
+void Board::setupBoard(){
+    //place kings
+    foreach(Player* p, players){
+
+
+    }
+
+    for(int i =0; i < boardSize-3; i++){
+        foreach(Player* p, players){
+
+        }
+
+    }
+
+
 }
 
 Field* Board::getField(int x, int y){
@@ -76,8 +163,6 @@ Field* Board::getField(int x, int y){
             return nullptr;
         }
     }
-
-
 
     bool Board::fieldExists(int x, int y){
         if(x>=0 && x<boardSize*2-1){
@@ -163,7 +248,7 @@ Field* Board::getField(int x, int y){
             f->highlight(NONE);
             if(this->activeFields->empty()){
                 this->waitingItem->receiveMessage(NO_FIELDS, nullptr);
-                qDebug("No suitable fields");
+                //qDebug("No suitable fields");
                 this->removeWaitingItem();
             }
         }
@@ -185,7 +270,7 @@ Field* Board::getField(int x, int y){
         if(state >= WAITING){
             if(this->activeFields != nullptr && this->activeFields->contains(f)){
                 if(this->waitingItem != nullptr){
-                    qDebug() << "Clicked highlighted field";
+                    //qDebug() << "Clicked highlighted field";
                     this->waitingItem->processInput(f);
                 }
             }else{
@@ -228,10 +313,11 @@ Field* Board::getField(int x, int y){
             Item* item = f->getItem();
 
             if(item->getPlayer()==this->activePlayer){
-                qDebug() << "Action Performed";
+                //qDebug() << "Action Performed";
                 f->getItem()->action();
-            }else{qDebug("Wrong player");}
-
+            }else{
+                //qDebug("Wrong player");
+            }
         }
     }
 
@@ -261,6 +347,18 @@ Field* Board::getField(int x, int y){
         this->players.append(p);
     }
 
+    void Board::eliminatePlayer(Player *player){
+        foreach(Item* i, *player->getActiveItems()){
+            i->destroy();
+        }
+        players.removeAll(player);
+        if(players.length() == 1){
+            Player* winner = players[0];
+            QString entry = QString("Player %1 won!").arg(*winner->getName());
+            log(entry);
+        }
+    }
+
     Player* Board::getPlayer(int id){
         foreach(Player* p, this->players){
             if(p->getId() == id){return p;}
@@ -274,12 +372,11 @@ Field* Board::getField(int x, int y){
             activePlayerIndex = players.lastIndexOf(player);
             window->displayPlayer(this->activePlayer->getName(), this->activePlayer->getColor());
         }else{
-            qDebug("Invalid Player");
+            //qDebug("Invalid Player");
         }
     }
 
-    QString *Board::getActivePlayerName()
-    {
+    QString *Board::getActivePlayerName(){
         return activePlayer->getName();
     }
 
@@ -307,7 +404,7 @@ Field* Board::getField(int x, int y){
 
     void Board::pass(){
         if(state>=SECURE){
-            qDebug() << "Can't pass until board is unlocked";
+           //qDebug() << "Can't pass until board is unlocked";
             return;
         }
         spawnField = nullptr;

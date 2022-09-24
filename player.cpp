@@ -71,6 +71,11 @@ QVector<Item *> *Player::getSpareItems(){
     return &spareItems;
 }
 
+QVector<Item *> *Player::getActiveItems()
+{
+    return &activeItems;
+}
+
 void Player::addActiveItem(Item* item){
     this->activeItems.append(item);
 }
@@ -88,14 +93,16 @@ void Player::activateItem(Item* item){
     }
 }
 
-void Player::spawnItem(int index, Field *target)
-{
+void Player::spawnItem(int index, Field *target){
 
 }
 
-void Player::spawnItem(Item *item, Field *target)
-{
-
+void Player::spawnItem(Item *item, Field *target){
+    int pieceCost = activeItems.length() + 1;
+    if(resources >= pieceCost){
+        resources -= pieceCost;
+        spawnItemFree(item, target);
+    }
 }
 
 void Player::spawnItemById(int id, Field *target, bool free){

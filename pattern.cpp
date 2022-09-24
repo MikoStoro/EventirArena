@@ -59,7 +59,7 @@ bool Pattern::isDownward(Coords c){
 
 Coords Pattern::fix(Coords c, int initX, Coords o){
     int offset = pickSmaller(distanceFromCenter(initX),qAbs(o.x));
-    qDebug() << distanceFromCenter(initX) << o.x << offset;
+    //qDebug() << distanceFromCenter(initX) << o.x << offset;
     return(Coords(c.x, c.y+offset));
 }
 

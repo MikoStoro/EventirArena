@@ -15,6 +15,7 @@ private:
     int boardSize = 0;
     Field*** fields = nullptr;
     int* rowLengths;
+    int height;
     QGraphicsScene* scene;
     QVector<Item*> items;
 
@@ -22,7 +23,7 @@ private:
     Player* activePlayer = nullptr;
     int activePlayerIndex = 0;
     QVector<Player*> players;
-
+    QVector<Field*> startingFields[6];
 
     int state = READY;
     Item* waitingItem = nullptr;
@@ -41,6 +42,10 @@ private:
 public:
     Board();
     Board(int boardSize, QGraphicsScene* scene);
+
+    void generateStartingPositions();
+    void setupBoard();
+
     Field* getField(int x, int y);
     bool fieldExists(int x, int y);
     int size();
@@ -74,6 +79,7 @@ public:
 
     void addPlayer(Player* player);
     void addPlayer(int id);
+    void eliminatePlayer(Player* player);
     void setActivePlayer(Player* player);
     QString* getActivePlayerName();
     void changeActivePlayer();
