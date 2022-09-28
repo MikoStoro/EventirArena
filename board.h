@@ -24,10 +24,17 @@ private:
     int activePlayerIndex = 0;
     QVector<Player*> players;
     QVector<Field*> startingFields[6];
+    int setupStage = 1;
+
 
     int state = READY;
     Item* waitingItem = nullptr;
     QVector<Field*>* activeFields = nullptr;
+
+
+    void (Board::*processLeftClick)(Field*) = nullptr;
+    void (Board::*spawn)(int id) = nullptr;
+
     QVector<Field*> alteredFields;
     Field* spawnField = nullptr;
     Window* window = nullptr;
@@ -44,7 +51,12 @@ public:
     Board(int boardSize, QGraphicsScene* scene);
 
     void generateStartingPositions();
+    void highlightStartingPosition(Player* player);
+    void assignStartingPositions();
     void setupBoard();
+    void setupNextStep(Field* f);
+    void endSetup();
+
 
     Field* getField(int x, int y);
     bool fieldExists(int x, int y);
@@ -70,11 +82,18 @@ public:
     int getState();
 
     void fieldClicked(Field* f);
+    void regularClick(Field* f);
+    void setupClick(Field* f);
+
+
     void fieldRightClicked(Field* f);
     void performFieldAction(Field* f);
 
     void setItem(int x, int y, Item* item);
     void requestSpawn(Field* f = nullptr);
+    void requestSetupSpawn(Field *f = nullptr);
+    void regularSpawn(int id);
+    void setupSpawn(int id);
 
 
     void addPlayer(Player* player);
@@ -97,6 +116,7 @@ public:
     QColor* getHoverBorderColor();
 
     Player* getPlayer(int id);
+
 
 public slots:
     void spawnItem(int id);

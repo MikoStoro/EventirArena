@@ -26,11 +26,16 @@ public:
 
     void setName(QString name);
     QString* getName();
+    int startingPosition = -1;
+    int getStaringPosition();
+    void setStartingPosition(int val);
 
     int getResources();
 
     QColor* getColor();
     void setColor(int r, int g, int b, int a = 255);
+
+    void startTurn();
 
     QVector<Item*>* getSpareItems();
     QVector<Item*>* getActiveItems();

@@ -68,6 +68,10 @@ void Window::hideMenu(){
     gameUI->hidePieces();
 }
 
+void Window::enablePassBtn(bool val){
+    gameUI->passBtn->setEnabled(val);
+}
+
 void Window::enablePassBtn(){
     gameUI->passBtn->setEnabled(true);
 }

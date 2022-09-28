@@ -7,9 +7,13 @@
 #include <QDebug>
 #include <QString>
 
+
+
 Board::Board(){}
 Board::Board(int boardSize, QGraphicsScene* scene){
 
+    this->processLeftClick = &Board::regularClick;
+    this->spawn = &Board::regularSpawn;
     this->scene = scene;
     this->boardSize = boardSize;
     this->fields = new Field**[boardSize*2-1];
@@ -24,7 +28,6 @@ Board::Board(int boardSize, QGraphicsScene* scene){
     double rowY = 0;
     double dist = size*v3;
 
-
     for(int i = 0; i < boardSize; i++){
         this->fields[i] = new Field*[boardSize+i];
         this->rowLengths[i] = boardSize+i;
@@ -33,7 +36,6 @@ Board::Board(int boardSize, QGraphicsScene* scene){
         currentY = rowY;
         for (int j = 0; j < boardSize+i; j++){
             GraphicHexagon* hex = new GraphicHexagon(currentX, currentY, size, scene);
-
             Field* field = new Field(i,j, this);
             field->linkGraphicsHex(hex);
             fields[i][j] = field;
@@ -70,7 +72,6 @@ Board::Board(int boardSize, QGraphicsScene* scene){
         rowY -= dist*v3/2;
     }
 
-    generateStartingPositions();
 }
 
 void Board::generateStartingPositions(){
@@ -80,20 +81,12 @@ void Board::generateStartingPositions(){
         startingFields[0].append(getField(0,x));
     }
 
-    foreach(Field* f, startingFields[0]){
-        f->highlight(SPECIAL);
-        qDebug()<<"A";
-    }
 
     //startingField[1]
     maxIndex = boardSize-1;
     for(int y = 1; y < maxIndex; y++){
         int x = rowLengths[y]-1;
         startingFields[1].append(getField(y, x));
-    }
-
-    foreach(Field* f, startingFields[1]){
-        f->highlight(SPECIAL);
     }
 
     //startingField[2]
@@ -104,19 +97,10 @@ void Board::generateStartingPositions(){
         startingFields[2].append(getField(y,x));
     }
 
-    foreach(Field* f, startingFields[2]){
-        f->highlight(SPECIAL);
-        qDebug()<<"A";
-    }
-
     //startingField[3]
     maxIndex = rowLengths[height-1]-1;
     for(int x = 1; x<maxIndex; x++){
         startingFields[3].append(getField(height-1, x));
-    }
-
-    foreach(Field* f, startingFields[3]){
-        f->highlight(SPECIAL);
     }
 
     //startingFields[4]
@@ -125,35 +109,78 @@ void Board::generateStartingPositions(){
         startingFields[4].append(getField(y,0));
     }
 
-    foreach(Field* f, startingFields[4]){
-        f->highlight(SPECIAL);
-    }
-
     maxIndex = boardSize-1;
     for(int y = 1; y < maxIndex; y++){
         startingFields[5].append(getField(y,0));
     }
 
-    foreach(Field* f, startingFields[5]){
-        f->highlight(SPECIAL);
+    assignStartingPositions();
+}
+
+void Board::highlightStartingPosition(Player *player){
+    int posIndex = player->getStaringPosition();
+    foreach(Field* f, startingFields[posIndex]){
+        if(f->getItem()==nullptr){
+            f->highlight(ACTIVE);
+        }
+    }
+}
+
+void Board::assignStartingPositions()
+{
+    switch(players.length()){
+        case 2:
+            players[0]->setStartingPosition(0);
+            players[1]->setStartingPosition(3);
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+    default:
+        return;
+
     }
 }
 
 void Board::setupBoard(){
-    //place kings
-    foreach(Player* p, players){
+    this->processLeftClick = &Board::setupClick;
+    this->spawn = &Board::setupSpawn;
+    setActivePlayer(players[0]);
+    activePlayerIndex = 0;
+    resetAlteredFields();
+    highlightStartingPosition(activePlayer);
+    window->enablePassBtn(false);
+    setupStage = 1;
 
+}
 
-    }
-
-    for(int i =0; i < boardSize-3; i++){
-        foreach(Player* p, players){
-
+void Board::setupNextStep(Field *f){
+    static bool spawnRequested = false;
+    if(startingFields[activePlayer->startingPosition].contains(f)){
+        if(setupStage<=players.length()){
+            requestSpawn(f);
+            spawnItem(CROWN);
+        }else if (setupStage <= players.length()*(boardSize-2)){
+            if(f->getItem() == nullptr)
+                requestSetupSpawn(f);
+        }else{
+           endSetup();
         }
-
     }
+}
 
-
+void Board::endSetup()
+{
+    setupStage= 1;
+    setActivePlayer(players[0]);
+    activePlayerIndex = 0;
+    resetAlteredFields();
+    window->enablePassBtn(true);
+    this->processLeftClick = &Board::regularClick;
+    this->spawn = &Board::regularSpawn;
 }
 
 Field* Board::getField(int x, int y){
@@ -265,8 +292,18 @@ Field* Board::getField(int x, int y){
         return this->state;
     }
 
-    void Board::fieldClicked(Field* f){
 
+
+    void Board::fieldClicked(Field* f){
+        if(processLeftClick != nullptr){
+            (this->*processLeftClick)(f);
+        }
+    }
+
+
+
+    void Board::regularClick(Field *f)
+    {
         if(state >= WAITING){
             if(this->activeFields != nullptr && this->activeFields->contains(f)){
                 if(this->waitingItem != nullptr){
@@ -287,25 +324,33 @@ Field* Board::getField(int x, int y){
         }
     }
 
+
+
+    void Board::setupClick(Field *f)
+    {
+        setupNextStep(f);
+    }
+
+
+
     void Board::fieldRightClicked(Field *f){
         //will be changed
-        if(state == READY){
-            removeWaitingItem(WAITING);
-            spawnField = f;
-            requestSpawn(f);
+//        if(state == READY){
+//            removeWaitingItem(WAITING);
+//            spawnField = f;
+//            requestSpawn(f);
+//        }
+
+        if(state<LOCKED){
+            if(waitingItem != nullptr){removeWaitingItem(WAITING); window->hideMenu();}
+            else{setState(READY); window->hideMenu();}
         }
     }
 
     void Board::spawnItem(int id){
-        activePlayer->spawnItemById(id,spawnField,true);
-        setState(READY);
-        spawnField->highlight(NONE);
-        spawnField = nullptr;
-
-        if(waitingItem != nullptr){
-            waitingItem->receiveMessage(SPAWN_RESOLVED);
+        if(this->spawn != nullptr){
+            (this->*spawn)(id);
         }
-        window->hideMenu();
     }
 
     void Board::performFieldAction(Field* f){
@@ -329,11 +374,48 @@ Field* Board::getField(int x, int y){
         }
     }
 
+
+
     void Board::requestSpawn(Field *f){
         if(f!=nullptr && f->getItem() == nullptr){
             spawnField = f;
             f->highlight(SPECIAL);
             setState(LOCKED);
+            window->showMenu(activePlayer);
+        }
+    }
+
+    void Board::regularSpawn(int id)
+    {
+        activePlayer->spawnItemById(id,spawnField,true);
+        setState(READY);
+        spawnField->highlight(NONE);
+        spawnField = nullptr;
+
+        if(waitingItem != nullptr){
+            waitingItem->receiveMessage(SPAWN_RESOLVED);
+        }
+
+        window->hideMenu();
+    }
+
+    void Board::setupSpawn(int id)
+    {
+        regularSpawn(id);
+        changeActivePlayer();
+        resetAlteredFields();
+        highlightStartingPosition(activePlayer);
+        setupStage++;
+        if(setupStage > players.length()*(boardSize-2)){
+            endSetup();
+        }
+    }
+
+    void Board::requestSetupSpawn(Field* f){
+        if(f!=nullptr && f->getItem() == nullptr){
+            if(spawnField != nullptr){spawnField->highlight(ACTIVE);}
+            spawnField = f;
+            f->highlight(SPECIAL);
             window->showMenu(activePlayer);
         }
     }
@@ -396,6 +478,7 @@ Field* Board::getField(int x, int y){
 
     void Board::nextTurn(){
         changeActivePlayer();
+        activePlayer->startTurn();
         resetAlteredFields();
         window->hideMenu();
         turnNo++;
@@ -408,7 +491,7 @@ Field* Board::getField(int x, int y){
             return;
         }
         spawnField = nullptr;
-        if(waitingItem == nullptr){nextTurn(); return;}
+        if(waitingItem == nullptr){nextTurn(); setState(READY); return;}
         waitingItem->pass();
     }
 

@@ -29,35 +29,6 @@ private:
     void initMenuScreen();
     void clearScreen();//    if(this->view == nullptr){return;}
 
-    //    QVBoxLayout* mainLayout = new QVBoxLayout;
-
-    //    QHBoxLayout* gameLayout = new QHBoxLayout;
-    //    mainLayout->addLayout(gameLayout);
-
-    //    QWidget* piecesSidebar = new QWidget(this);
-    //    QVBoxLayout* piecesSidebarLayout = new QVBoxLayout;
-    //    piecesSidebar->setLayout(piecesSidebarLayout);
-    //    //piecesSidebar
-
-
-    //    gameLayout->addLayout(piecesSidebarLayout);
-    //    gameLayout->addWidget(view);
-
-    //    QHBoxLayout* UILayout = new QHBoxLayout;
-    //    mainLayout->addLayout(UILayout);
-
-
-    //    QVBoxLayout* dataPanel = new QVBoxLayout;
-
-    //    //dataPanel->addWidget(gameUI.turnLabel);
-    //    dataPanel->addWidget(gameUI.playerLabel);
-    //    dataPanel->addWidget(gameUI.goldLabel);
-    //    dataPanel->addWidget(gameUI.passBtn);
-
-    //    UILayout->addLayout(dataPanel);
-    //    UILayout->addWidget(gameUI.gameLog);
-    //    gameUI.gameLog->setReadOnly(true);
-
 protected:
 
 public:
@@ -77,6 +48,7 @@ public:
     void pass();
     void showMenu(Player* player = nullptr);
     void hideMenu();
+    void enablePassBtn(bool val);
 
     QGraphicsView *getView();
 public slots:

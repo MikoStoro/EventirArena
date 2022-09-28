@@ -6,7 +6,6 @@
 #include "shield.h"
 #include "banner.h"
 #include "spear.h"
-#include "eye.h"
 
 #include <QApplication>
 #include <QGraphicsScene>
@@ -46,6 +45,10 @@ int main(int argc, char *argv[])
     p2->initBasicItems();
     board.setActivePlayer(p1);
     board.addPlayer(p2);
+
+    board.generateStartingPositions();
+    board.setupBoard();
+
 
 //    Item* test = new Sword(p1);
 //    board.setItem(1,1,test);

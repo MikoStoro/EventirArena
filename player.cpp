@@ -14,11 +14,13 @@
 Player::Player()
 {
     this->id = A;
+    this->resources = 0;
 }
 
 Player::Player(int id, QString name){
     this->id = id;
     this->name = name;
+    this->resources = 0;
 }
 
 void Player::initBasicItems()
@@ -55,6 +57,14 @@ QString *Player::getName()
     return &this->name;
 }
 
+int Player::getStaringPosition(){
+    return startingPosition;
+}
+
+void Player::setStartingPosition(int val){
+    startingPosition = val;
+}
+
 int Player::getResources(){
     return resources;
 }
@@ -65,6 +75,11 @@ QColor* Player::getColor(){
 
 void Player::setColor(int r, int g, int b, int a){
     this->playerColor = new QColor(r,g,b,a);
+}
+
+void Player::startTurn()
+{
+    resources++;
 }
 
 QVector<Item *> *Player::getSpareItems(){
