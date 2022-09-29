@@ -16,15 +16,19 @@ enum boardStates{
 
 enum players{
     A = 0,
-    B = 1
+    B = 1,
+    C = 2,
+    D = 3,
+    E = 4,
+    F = 5
 };
 
 enum highlights{
     NONE = 0,
     ACTIVE = 1,
     SPECIAL = 2,
-    HOVER = SPECIAL+1,
-    TEXT
+    HOVER = 3,
+    TEXT = 4
 };
 
 enum messageIDs{

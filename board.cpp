@@ -134,10 +134,20 @@ void Board::assignStartingPositions()
             players[1]->setStartingPosition(3);
             break;
         case 3:
+            players[0]->setStartingPosition(0);
+            players[1]->setStartingPosition(2);
+            players[2]->setStartingPosition(4);
             break;
         case 4:
+            players[0]->setStartingPosition(5);
+            players[1]->setStartingPosition(1);
+            players[2]->setStartingPosition(2);
+            players[3]->setStartingPosition(4);
             break;
-        case 5:
+        case 6:
+            for(int i = 0; i<6; i++){
+                players[i]->setStartingPosition(i);
+            }
             break;
     default:
         return;

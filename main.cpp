@@ -34,17 +34,28 @@ int main(int argc, char *argv[])
     win.setView(view);
     Board board(5,scene);
     win.setBoard(&board);
+
     Player* p1 = new Player(A);
-    p1->setColor(255,0,0,128);
+    p1->setColor(180,0,0,255);
     p1->setName(QString("Red"));
     p1->initBasicItems();
     board.addPlayer(p1);
+
     Player* p2 = new Player(B);
-    p2->setColor(0,0,255,128);
+    p2->setColor(0,0,180,128);
     p2->setName(QString("Blue"));
     p2->initBasicItems();
-    board.setActivePlayer(p1);
     board.addPlayer(p2);
+
+    Player* p3 = new Player(C);
+    p3->setColor(0,180,0,255);
+    p3->setName(QString("Green"));
+    p3->initBasicItems();
+    board.addPlayer(p3);
+
+    board.setActivePlayer(p1);
+
+
 
     board.generateStartingPositions();
     board.setupBoard();

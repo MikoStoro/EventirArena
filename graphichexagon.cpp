@@ -88,6 +88,7 @@ void GraphicHexagon::setText(QString& text){
     if(textField == nullptr && this->scene != nullptr){
         textField = new QGraphicsSimpleTextItem;
         this->scene->addItem(textField);
+        textField->setZValue(TEXT);
     }
     textField->setText(text);
     QRectF temp = textField->sceneBoundingRect();
